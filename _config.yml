@@ -84,9 +84,9 @@ author:
   avatar           : "profile.png"
   bio              : "PhD candidate in machine learning applied to healthcare."
   location         : "Marseille, France"
-  employer         :
+  employer         : "LIS, Aix-Marseille Université"
   pubmed           : ""
-  googlescholar    : ""
+  googlescholar    : "https://scholar.google.com/citations?hl=en&authuser=1&user=TQJRonQAAAAJ"
   email            :
   researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
   uri              :
@@ -103,7 +103,7 @@ author:
   impactstory      : #"https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
   lastfm           :
   linkedin         :
-  orcid            : ""
+  orcid            : "https://orcid.org/0000-0002-7540-0610"
   pinterest        :
   soundcloud       :
   stackoverflow    : # http://stackoverflow.com/users/123456/username
