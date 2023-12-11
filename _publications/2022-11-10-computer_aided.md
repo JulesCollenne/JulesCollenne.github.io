@@ -1,7 +1,7 @@
 ---
 title: "Computer Aided Diagnosis of Melanoma Using Deep Neural Networks and Game Theory: Application on Dermoscopic Images of Skin Lesions"
 collection: publications
-permalink: /publication/2022_computer_aided
+permalink: /publication/2022-11-10-computer_aided
 excerpt: 'We develop a new framework for entirely unsupervised anomaly detection in the field of skin lesion analysis. Our approach leverage self-supervised CNNs and an unsupervised anomaly detection algorithm to detect melanomas without any annotation.'
 date: 2022-11-10
 venue: 'International Journal of Molecular Sciences'
