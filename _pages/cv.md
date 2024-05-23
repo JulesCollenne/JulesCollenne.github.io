@@ -15,27 +15,41 @@ Education
 * M.S. in Computer Science and Machine Learning, Aix-Marseille University, 2021
 * Ph.D (ongoing) in Machine learning applied to Healthcare, Aix-Marseille University, 2024 (expected)
 
-```
+
 Work experience
 ======
-* Summer 2015: Research Assistant
-  * Github University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
+* 2021-2024: PhD Student in Artificial Intelligence Applied to Medicine
+  * Laboratoire Informatique et Systèmes, Aix-Marseille University
+  * Similarity Learning Approaches for Assisting Melanoma Diagnosis
+  * Supervisors: Professors D. Merad and S. Dubuisson
 
-* Fall 2015: Research Assistant
-  * Github University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
+* Summer 2020: Research Intern
+  * Laboratoire Informatique et Systèmes, Aix-Marseille University
+  * Preliminary work on machine learning interpretability and skin lesions asymmetry
+  * Supervisor: Professor R. Iguernaissi
   
 Skills
 ======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
+* Designing and deploying cutting-edge machine learning models for research
+  * Python
+  * Docker
+  * Git
+  * Pytorch
+  * Tensorflow / Keras
+* Scientific Writing
+  * Latex
+  * Zotero
+* Software development
+  * C/C++, C#, Java
+  * Object-Oriented programming
+  * Gtk+
+  * Qt
+* Videogame development
+  * Unity
+  * Unreal Engine
+* Android App Development
+  * Android Studio
+  
 
 Publications
 ======
