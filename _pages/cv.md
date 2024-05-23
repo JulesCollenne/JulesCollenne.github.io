@@ -15,6 +15,7 @@ Education
 * M.S. in Computer Science and Machine Learning, Aix-Marseille University, 2021
 * Ph.D (ongoing) in Machine learning applied to Healthcare, Aix-Marseille University, 2024 (expected)
 
+```
 Work experience
 ======
 * Summer 2015: Research Assistant
