@@ -11,10 +11,9 @@ redirect_from:
 
 Education
 ======
-* B.S. in Computer Science, Aix-Marseille University, 2019
+* Ph.D (ongoing) in Machine Learning Applied to Medicine, Aix-Marseille University, 2024 (expected)
 * M.S. in Computer Science and Machine Learning, Aix-Marseille University, 2021
-* Ph.D (ongoing) in Machine learning applied to Healthcare, Aix-Marseille University, 2024 (expected)
-
+* B.S. in Computer Science, Aix-Marseille University, 2019
 
 Work experience
 ======
