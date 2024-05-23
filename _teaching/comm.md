@@ -8,15 +8,3 @@ date: 2023-01-01
 location: "Marseille, France"
 ---
 
-
-<! --
-Heading 1
-======
-
-Heading 2
-======
-
-Heading 3
-======
-!>
-
