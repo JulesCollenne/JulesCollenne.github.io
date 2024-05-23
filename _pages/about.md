@@ -1,12 +1,12 @@
 ---
 permalink: /
-title: "About me"
-excerpt: "About me"
+title: "Welcome! 👋"
+excerpt: "Welcome! 👋"
 author_profile: true
 redirect_from: 
   - /about/
   - /about.html
 ---
 
-I'm currently pursuing a PhD in computer science applied to healthcare, particularly skin cancers. My research focus on image classification, unsupervised visual representation learning and siamese neural networks.
+Hey there! My name is Jules Collenne, and I'm currently pursuing a PhD in Artificial Intelligence 🖥️ Applied to Medicine 🩺. My research focuses on computer-aided diagnosis, interpretability of machine learning models, and, in a more general and theoretical manner, unsupervised visual representation learning.
 
