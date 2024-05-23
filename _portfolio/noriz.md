@@ -1,6 +1,6 @@
 ---
 title: "NoRiz"
-excerpt: "A pacman-like videogame in the theme of sushis and cats !<br/><img src='/images/500x300.png'>"
+excerpt: "A pacman-like videogame in the theme of sushis and cats !"
 collection: portfolio
 ---
 

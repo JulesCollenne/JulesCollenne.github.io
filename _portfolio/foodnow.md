@@ -1,6 +1,6 @@
 ---
 title: "FoodNow"
-excerpt: "Recipe android app to help amateur to discover new recipes and cooking techniques.<br/><img src='/images/500x300.png'>"
+excerpt: "Recipe android app to help amateur to discover new recipes and cooking techniques."
 collection: portfolio
 ---
 
