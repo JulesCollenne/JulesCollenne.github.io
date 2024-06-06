@@ -9,4 +9,4 @@ paperurl: 'https://doi.org/10.1016/j.jid.2023.09.289'
 citation: '<b>J. Collenne</b>, J. Monnier, R. Iguernaissi, M. Nawaf, M.-A. Richard, J.-J. Grob, C. Gaudy-Marqueste, S. Dubuisson, D. Merad. (2024). &quot;Fusion between an Algorithm Based on the Characterization of Melanocytic Lesions Asymmetry with an Ensemble of Convolutional Neural Networks for Melanoma Detection.&quot; <i>Journal of Investigative Dermatology.</i>'
 ---
 
-[Download paper here](http://academicpages.github.io/files/paper1.pdf)
+<! -- [Download paper here](http://academicpages.github.io/files/paper1.pdf) !>
