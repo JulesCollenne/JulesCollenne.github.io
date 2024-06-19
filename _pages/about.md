@@ -13,7 +13,7 @@ Hey there! My name is Jules Collenne, and I'm currently pursuing a PhD in Artifi
 News
 ======
 <ul>
-  <li><b>[06/2024]</b> 🎉 Our work was accepted for presentation at <a href="">ICIP 2024</a> 🎉</li>
+  <li><b>[06/2024]</b> 🎉 Our work was accepted for presentation at <a href="https://2024.ieeeicip.org/">ICIP 2024</a> 🎉</li>
   <li><b>[05/2024]</b> I had the honor of serving as a reviewer for <a href="https://conferences.miccai.org/2024/en/">MICCAI 2024</a> and <a href="https://bmvc2024.org/">BMVC 2024</a>!</li>
   <li><b>[10/2023]</b> I shared my findings at the <a href="https://sites.google.com/view/mlmi2023">MLMI Workshop</a> during the prestigious <a href="https://conferences.miccai.org/2023/en/">MICCAI 2023</a> Conference!</li>
    <li><b>[10/2023]</b> I was delighted to attend the <a href="https://iccv2023.thecvf.com/"> ICCV 2023</a> conference!</li>
