@@ -194,7 +194,7 @@ defaults:
   - scope:
       path: ""
     values:
-      favicon: /images/fox.png
+      favicon: /images/fox.ico
   # _posts
   - scope:
       path: ""
