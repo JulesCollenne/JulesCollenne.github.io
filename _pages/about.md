@@ -24,7 +24,7 @@ News
 Publications
 ======
 <ul>
-  {% for post in site.publications | reverse %}
-    {% include archive-single-cv.html %}
+  {% for post in site.publications reversed %}
+    {% include archive-single.html %}
   {% endfor %}
 </ul>
