@@ -10,7 +10,7 @@ redirect_from:
 
 Hey there! My name is Jules Collenne, and I'm currently pursuing a PhD in Artificial Intelligence 🖥️ Applied to Medicine 🩺. My research focuses on computer-aided diagnosis, interpretability of machine learning models, and, in a more general and theoretical manner, unsupervised visual representation learning.
 
-🤗 I'm currently actively searching for an Arxiv endorsement! 📚🔍
+🤗 I'm actively seeking an Arxiv endorsement! 📚🔍 Please feel free to contact me via email.
 
 News
 ======
