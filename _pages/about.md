@@ -1,6 +1,6 @@
 ---
 permalink: /
-title: "Jules Collenne 🙌"
+title: "About"
 excerpt: "Welcome! 👋"
 author_profile: true
 redirect_from: 
