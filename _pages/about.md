@@ -1,7 +1,7 @@
 ---
 permalink: /
 title: "About"
-excerpt: "Welcome! 👋"
+excerpt: "Jules Collenne is a PhD candidate in Artificial Intelligence applied to Medicine, specializing in computer-aided diagnosis, machine learning interpretability, and unsupervised visual representation learning."
 author_profile: true
 redirect_from: 
   - /about/
