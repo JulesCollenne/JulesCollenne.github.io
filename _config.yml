@@ -7,7 +7,7 @@
 
 # Site Settings
 locale                   : "en-US"
-title                    : ""
+title                    : "Jules Collenne"
 title_separator          : ""
 name                     : &name "Jules Collenne"
 description              : &description "PhD candidate in machine learning applied to healthcare"
