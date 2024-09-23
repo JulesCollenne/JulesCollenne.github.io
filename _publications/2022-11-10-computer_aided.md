@@ -6,20 +6,7 @@ excerpt: 'A game theory approach to analyse dermatological images of skin lesion
 date: 2022-11-10
 venue: 'International Journal of Molecular Sciences'
 paperurl: 'https://www.mdpi.com/1937126'
-bibtex: |
-@article{foahom2022computer,
-  title={Computer aided diagnosis of melanoma using deep neural networks and game theory: application on dermoscopic images of skin lesions},
-  author={Foahom Gouabou, Arthur Cartel and Collenne, Jules and Monnier, Jilliana and Iguernaissi, Rabah and Damoiseaux, Jean-Luc and Moudafi, Abdellatif and Merad, Djamal},
-  journal={International Journal of Molecular Sciences},
-  volume={23},
-  number={22},
-  pages={13838},
-  year={2022},
-  publisher={MDPI}
-}
+citation: 'A. C. Foahom Gouabou, <b>J. Collenne</b>, J. Monnier, R. Iguernaissi, J.-L. Damoiseaux, A. Moudafi, D. Merad.&quot;Computer Aided Diagnosis of Melanoma Using Deep Neural Networks and Game Theory: Application on Dermoscopic Images of Skin Lesions.&quot; <i>International Journal of Molecular Sciences. 2022; 23(22)</i>'
 ---
 
-<! -- [Download paper here](http://academicpages.github.io/files/paper1.pdf) 
-citation: 'A. C. Foahom Gouabou, <b>J. Collenne</b>, J. Monnier, R. Iguernaissi, J.-L. Damoiseaux, A. Moudafi, D. Merad.&quot;Computer Aided Diagnosis of Melanoma Using Deep Neural Networks and Game Theory: Application on Dermoscopic Images of Skin Lesions.&quot; <i>International Journal of Molecular Sciences. 2022; 23(22)</i>'
-
-!>
+<! -- [Download paper here](http://academicpages.github.io/files/paper1.pdf) !>
