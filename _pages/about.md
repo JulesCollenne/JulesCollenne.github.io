@@ -1,20 +1,21 @@
 ---
 permalink: /
 title: "Jules Collenne - AI Researcher"
-excerpt: "Jules Collenne is a PhD candidate in Artificial Intelligence applied to Medicine, specializing in computer-aided diagnosis, machine learning interpretability, and unsupervised visual representation learning."
+excerpt: "Jules Collenne holds a PhD in Artificial Intelligence applied to Medicine, specializing in computer-aided diagnosis, machine learning interpretability, and unsupervised visual representation learning."
 author_profile: true
 redirect_from: 
   - /about/
   - /about.html
 ---
 
-Hey there! My name is Jules Collenne, and I'm currently pursuing a PhD in Artificial Intelligence 🖥️ Applied to Medicine 🩺. My research focuses on computer-aided diagnosis, interpretability of machine learning models, and, in a more general and theoretical manner, unsupervised visual representation learning.
+Hey there! My name is Jules Collenne, and I hold a PhD in Artificial Intelligence 🖥️ Applied to Medicine 🩺. My research focuses on computer-aided diagnosis, interpretability of machine learning models, and, in a more general and theoretical manner, unsupervised visual representation learning.
 
 🤗 I'm actively seeking an Arxiv endorsement! 📚🔍 Please feel free to contact me via email.
 
 News
 ======
 <ul>
+  <li><b>[12/2024]</b> 🎉 I officially earned my PhD in Artificial Intelligence applied to medicine! 🥳</li>
   <li><b>[06/2024]</b> 🎉 Our work was accepted for presentation at <a href="https://2024.ieeeicip.org/">ICIP 2024</a> 🎉</li>
   <li><b>[05/2024]</b> I had the honor of serving as a reviewer for <a href="https://conferences.miccai.org/2024/en/">MICCAI 2024</a> and <a href="https://bmvc2024.org/">BMVC 2024</a>!</li>
   <li><b>[10/2023]</b> I shared my findings at the <a href="https://sites.google.com/view/mlmi2023">MLMI Workshop</a> during the prestigious <a href="https://conferences.miccai.org/2023/en/">MICCAI 2023</a> Conference!</li>
