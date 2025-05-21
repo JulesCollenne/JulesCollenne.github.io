@@ -66,9 +66,13 @@ og_image                 :  # Open Graph/Twitter default site image
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
-  type                   : # Person or Organization (defaults to Person)
-  name                   : # If the user or organization name differs from the site's name
-  links: # An array of links to social media profiles
+  type: Person
+  name: Jules Collenne
+  links:
+    - "https://github.com/JulesCollenne"
+    - "https://scholar.google.com/citations?user=TQJRonQAAAAJ"
+    - "https://orcid.org/0000-0002-7540-0610"
+    - "https://www.linkedin.com/in/jules-collenne/"
 
 
 # Analytics
@@ -267,6 +271,7 @@ plugins:
   - jekyll-gist
   - jekyll-feed
   - jekyll-redirect-from
+  - jekyll-seo-tag
 # mimic GitHub Pages with --safe
 whitelist:
   - jekyll-paginate
@@ -274,6 +279,7 @@ whitelist:
   - jekyll-gist
   - jekyll-feed
   - jemoji
+  - jekyll-seo-tag
 
 
 # Archives
