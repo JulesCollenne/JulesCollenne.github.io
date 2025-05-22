@@ -27,7 +27,7 @@ News
 Publications
 ======
 <ul>
-  {% for pub in site.publications %}
-    {% include archive-single.html entry=pub %}
+  {% for post in site.publications reversed %}
+    {% include archive-single.html %}
   {% endfor %}
 </ul>
