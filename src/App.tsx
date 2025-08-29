@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // ---------------------------------------------
 // One-page personal website for Jules Collenne
@@ -121,6 +121,7 @@ const TEACHING = [
 ];
 
 export default function OnePageSite() {
+
   const [pubCount, setPubCount] = useState(2); // default visible publications
   const showMore = () => setPubCount((c) => Math.min(c + 3, PUBLICATIONS.length));
   const showLess = () => setPubCount(2);
@@ -176,7 +177,7 @@ export default function OnePageSite() {
                 ))}
               </nav>
             </div>
-
+            
             {/* Socials */}
             <div>
               <div className="mb-2 text-xs uppercase tracking-wider text-neutral-500">On the web</div>
