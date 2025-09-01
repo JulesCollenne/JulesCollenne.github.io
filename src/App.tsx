@@ -122,6 +122,21 @@ const TEACHING = [
 
 export default function OnePageSite() {
 
+useEffect(() => {
+  const script = document.createElement("script");
+  script.src =
+    "//clustrmaps.com/globe.js?d=zyT_D9l9lZVUoIn2kwibM4SiArPSNyX605T1uE28GZo";
+  script.id = "clstr_globe";
+  script.async = true;
+
+  const container = document.getElementById("clustrmap-container");
+  if (container) {
+    container.innerHTML = ""; // clear if already mounted
+    container.appendChild(script);
+  }
+}, []);
+
+
   const [pubCount, setPubCount] = useState(2); // default visible publications
   const showMore = () => setPubCount((c) => Math.min(c + 3, PUBLICATIONS.length));
   const showLess = () => setPubCount(2);
@@ -177,6 +192,13 @@ export default function OnePageSite() {
                 ))}
               </nav>
             </div>
+            
+            {/* Clustrmap globe */}
+  <div
+    id="clustrmap-container"
+    className="clustrmap mb-4"
+    style={{ width: "60px", height: "60px", overflow: "hidden" }}
+  />
             
             {/* Socials */}
             <div>
