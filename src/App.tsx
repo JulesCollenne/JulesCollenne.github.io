@@ -92,7 +92,7 @@ const PROJECTS = [
     title: "Guess the Movie (Web)",
     blurb: "A web game where players guess a movie based on a list of emojis.",
     tags: ["Web", "Game"],
-    link: "https://www.guessthemovie.eu/movie/",
+    link: "https://www.guessthemovie.eu/",
   },
   {
     title: "SJ-MAE",
