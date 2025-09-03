@@ -32,60 +32,54 @@ const NEWS = [
 
 const PUBLICATIONS = [
   {
+    id: "reset-icip-2024",
     title:
       "ReSet: A Residual Set-Transformer approach to tackle the ugly-duckling sign in melanoma detection",
     venue: "IEEE ICIP",
     year: 2024,
     authors: "J. Collenne, R. Iguernaissi, S. Dubuisson, D. Merad",
-    links: [
-      { label: "Project", href: "https://github.com/JulesCollenne/ReSeT" },
-    ],
+    links: [{ label: "Project", href: "https://github.com/JulesCollenne/ReSeT" }],
   },
   {
+    id: "jaad-2024",
     title:
       "Automated melanoma detection. An algorithm inspired from human intelligence characterizing disordered pattern of melanocytic lesions improving a convolutional neural network.",
-    venue: "Journal of the American Academy of Dermatology (JAAD)",
+    venue: "JAAD",
     year: 2024,
     authors:
       "J. Monnier, A.C. Foahom Gouabou, M. Serdi, J. Collenne, R. Iguernaissi, M.-A. Richard, C. Gaudy-Marqueste, J.-L. Damoiseaux, J.-J. Grob, D. Merad",
-    links: [
-      { label: "DOI", href: "https://doi.org/10.1016/j.jaad.2024.02.063" },
-    ],
+    links: [{ label: "DOI", href: "https://doi.org/10.1016/j.jaad.2024.02.063" }],
   },
   {
+    id: "jid-2024",
     title:
       "Fusion between an Algorithm Based on the Characterization of Melanocytic Lesions Asymmetry with an Ensemble of Convolutional Neural Networks for Melanoma Detection",
-    venue: "Journal of Investigative Dermatology (JID)",
+    venue: "JID",
     year: 2024,
     authors:
       "J. Collenne, J. Monnier, R. Iguernaissi, M. Nawaf, M.-A. Richard, J.-J. Grob, C. Gaudy-Marqueste, S. Dubuisson, D. Merad",
-    links: [
-      { label: "DOI", href: "https://doi.org/10.1016/j.jid.2023.09.289" },
-    ],
+    links: [{ label: "DOI", href: "https://doi.org/10.1016/j.jid.2023.09.289" }],
   },
   {
+    id: "mlmi-2023",
     title:
       "Enhancing Anomaly Detection in Melanoma Diagnosis Through Self-Supervised Training and Lesion Comparison",
     venue: "MLMI (MICCAI Workshop)",
     year: 2023,
     authors: "J. Collenne, R. Iguernaissi, S. Dubuisson, D. Merad",
-    links: [
-      { label: "Springer", href: "https://link.springer.com/chapter/10.1007/978-3-031-45676-3_16" },
-    ],
+    links: [{ label: "Springer", href: "https://link.springer.com/chapter/10.1007/978-3-031-45676-3_16" }],
   },
   {
+    id: "ijms-2022",
     title:
       "Computer Aided Diagnosis of Melanoma Using Deep Neural Networks and Game Theory: Application on Dermoscopic Images of Skin Lesions",
-    venue: "International Journal of Molecular Sciences (IJMS)",
+    venue: "IJMS",
     year: 2022,
     authors:
       "A.C. Foahom Gouabou, J. Collenne, J. Monnier, R. Iguernaissi, J.-L. Damoiseaux, A. Moudafi, D. Merad",
-    links: [
-      { label: "MDPI", href: "https://www.mdpi.com/1937126" },
-    ],
+    links: [{ label: "MDPI", href: "https://www.mdpi.com/1937126" }],
   },
 ];
-
 
 const PROJECTS = [
   {
@@ -101,7 +95,37 @@ const PROJECTS = [
     tags: ["Vision Transformers", "SSL"],
     link: "https://github.com/JulesCollenne/SJ-MAE",
   },
+  {
+    title: "Melanoma Detection (PhD)",
+    blurb:
+      "End-to-end computer-aided diagnosis for dermoscopy: asymmetry cues, lesion comparison, and self-supervised pretraining to improve melanoma detection and interpretability.",
+    tags: ["Medical AI", "Dermatology", "CAD"],
+    link: "https://scholar.google.com/citations?user=TQJRonQAAAAJ&hl=en",
+    relatedPubIds: ["reset-icip-2024", "jaad-2024", "jid-2024", "mlmi-2023", "ijms-2022"],
+  },
+  {
+    title: "NoRiz",
+    blurb:
+      "A Pac-Man–style maze action game written in Java. Control NoRiz, a sad sushi on a quest to recover lost rice while dodging hungry cats.",
+    tags: ["Java", "Game Dev"],
+    link: "https://github.com/JulesCollenne/NoRiz",
+  },
+  {
+    title: "FoodNow",
+    blurb:
+      "Android food-recommendation app built with Java, PHP, and MySQL. Features recipe search based on the fridge, favorites, and chef’s daily tips.",
+    tags: ["Android", "Java", "Full-stack"],
+    link: "https://github.com/JulesCollenne/FoodNow",
+  },
+  {
+    title: "GBZMRacing",
+    blurb:
+      "“GaBuZoMeu Racing”: an immersive racing game in C with GTK+, featuring a custom-made engine to create and play your own car races.",
+    tags: ["C", "Game Dev", "GTK+"],
+    link: "https://github.com/JulesCollenne/GBZMRacing",
+  },
 ];
+
 
 const TEACHING = [
   {
@@ -109,44 +133,71 @@ const TEACHING = [
     role: "Lecturer / TA",
     years: "2023–2025",
     details:
-      "TD/TP on recursion, trees, algorithmic puzzles; bonus TP: Gomoku with AI.",
+      "Taught introductory and advanced Python, including recursion, trees, and algorithmic puzzles.",
   },
   {
     course: "Systems Programming (C)",
     role: "TA",
     years: "2024–2025",
     details:
-      "TPs on memory, file processing (TextUtil), and MagickWand image compositing.",
+      "Taught C programming, focusing on memory management and file processing.",
+  },
+  {
+    course: "Databases (SQL)",
+    role: "TA",
+    years: "2022–2025",
+    details:
+      "Taught advanced SQL to 1st-, 2nd-, and 3rd-year students using MySQL and Oracle.",
   },
 ];
 
+
+function primaryLink(p: (typeof PUBLICATIONS)[number]) {
+  // Prefer DOI/Springer/MDPI when available; otherwise first link.
+  if (!p.links?.length) return null;
+  const preferred = p.links.find((l) => /doi\.org|springer\.com|mdpi\.com/i.test(l.href));
+  return preferred ?? p.links[0];
+}
+
+function pubsByIds(ids: string[]) {
+  const map = new Map(PUBLICATIONS.map((p) => [p.id, p]));
+  return ids.map((id) => map.get(id)).filter(Boolean) as typeof PUBLICATIONS;
+}
+
+function slugify(s: string) {
+  return s.toLowerCase().replace(/\W+/g, "-");
+}
+
 export default function OnePageSite() {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "//clustrmaps.com/globe.js?d=zyT_D9l9lZVUoIn2kwibM4SiArPSNyX605T1uE28GZo";
+    script.id = "clstr_globe";
+    script.async = true;
 
-useEffect(() => {
-  const script = document.createElement("script");
-  script.src =
-    "//clustrmaps.com/globe.js?d=zyT_D9l9lZVUoIn2kwibM4SiArPSNyX605T1uE28GZo";
-  script.id = "clstr_globe";
-  script.async = true;
-
-  const container = document.getElementById("clustrmap-container");
-  if (container) {
-    container.innerHTML = ""; // clear if already mounted
-    container.appendChild(script);
-  }
-}, []);
-
+    const container = document.getElementById("clustrmap-container");
+    if (container) {
+      container.innerHTML = ""; // clear if already mounted
+      container.appendChild(script);
+    }
+  }, []);
 
   const [pubCount, setPubCount] = useState(2); // default visible publications
+  const [openRelated, setOpenRelated] = useState<Record<string, boolean>>({
+    // open by default if you want:
+    // "Melanoma Detection (PhD)": true,
+  });
+
   const showMore = () => setPubCount((c) => Math.min(c + 3, PUBLICATIONS.length));
   const showLess = () => setPubCount(2);
 
   // Utility for date formatting
-  const fmt = (d: string) => new Date(d + "T00:00:00").toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
+  const fmt = (d: string) =>
+    new Date(d + "T00:00:00").toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
 
   return (
     <div className="min-h-screen bg-white text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100">
@@ -170,7 +221,7 @@ useEffect(() => {
               </div>
 
               <p className="mt-4 text-sm leading-relaxed text-neutral-700 dark:text-neutral-300">
-                I build self-supervised learning systems for vision, apply AI to medecine, explore multi‑task pretraining, and prototype optimization tools.
+                I build self-supervised learning systems for vision, apply AI to medecine, explore multi-task pretraining, and prototype optimization tools.
               </p>
 
               {/* Quick nav */}
@@ -192,14 +243,14 @@ useEffect(() => {
                 ))}
               </nav>
             </div>
-            
+
             {/* Clustrmap globe */}
-  <div
-    id="clustrmap-container"
-    className="clustrmap mb-4"
-    style={{ width: "60px", height: "60px", overflow: "hidden" }}
-  />
-            
+            <div
+              id="clustrmap-container"
+              className="clustrmap mb-4"
+              style={{ width: "60px", height: "60px", overflow: "hidden" }}
+            />
+
             {/* Socials */}
             <div>
               <div className="mb-2 text-xs uppercase tracking-wider text-neutral-500">On the web</div>
@@ -243,8 +294,9 @@ useEffect(() => {
             <h2 className="text-2xl font-semibold">Jules Collenne, PhD – AI Researcher</h2>
             <p className="mt-3 leading-relaxed text-neutral-700 dark:text-neutral-300">
               Hey there! My name is Jules Collenne, and I hold a PhD in Artificial Intelligence 🖥️ Applied to Medicine 🩺. My research focuses on computer-aided diagnosis, interpretability of machine learning models, and, in a more general and theoretical manner, unsupervised visual representation learning.
-
-🤗 I’m actively seeking an Arxiv endorsement! 📚🔍 Please feel free to contact me via email.
+              <br />
+              <br />
+              🤗 I’m actively seeking an Arxiv endorsement! 📚🔍 Please feel free to contact me via email.
             </p>
           </section>
 
@@ -268,78 +320,181 @@ useEffect(() => {
           <Divider />
 
           {/* Publications with Show More */}
-          <section id="publications" className="scroll-mt-24">
-            <SectionTitle>Publications</SectionTitle>
-            <ul className="mt-4 space-y-6">
-              {PUBLICATIONS.slice(0, pubCount).map((p, i) => (
-                <li key={i} className="rounded-2xl border border-neutral-200 p-4 dark:border-neutral-800">
-                  <div className="text-base font-medium">{p.title}</div>
-                  <div className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
-                    {p.authors} · {p.venue} · {p.year}
-                  </div>
-                  {p.links?.length ? (
-                    <div className="mt-2 flex flex-wrap gap-3 text-sm">
-                      {p.links.map((l) => (
-                        <a
-                          key={l.label}
-                          href={l.href}
-                          className="rounded-md underline-offset-4 hover:underline"
-                          target="_blank"
-                          rel="noreferrer noopener"
-                        >
-                          {l.label}
-                        </a>
-                      ))}
-                    </div>
-                  ) : null}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-4 flex gap-3">
-              {pubCount < PUBLICATIONS.length ? (
-                <button onClick={showMore} className="rounded-xl border border-neutral-300 px-4 py-2 text-sm shadow-sm hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-900">
-                  Show more
-                </button>
-              ) : null}
-              {pubCount > 2 ? (
-                <button onClick={showLess} className="rounded-xl border border-neutral-300 px-4 py-2 text-sm shadow-sm hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-900">
-                  Show less
-                </button>
-              ) : null}
-            </div>
-          </section>
+<section id="publications" className="scroll-mt-24">
+  <SectionTitle>Publications</SectionTitle>
 
-          <Divider />
+  {/* Scholar link just under the title */}
+  <div className="mt-1">
+    <a
+      href="https://scholar.google.com/citations?user=TQJRonQAAAAJ&hl=en"
+      target="_blank"
+      rel="noreferrer noopener"
+      className="inline-flex items-center gap-1 rounded-lg border border-neutral-300 px-2.5 py-1 text-xs text-neutral-700 underline-offset-4 hover:bg-neutral-50 hover:underline dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-900"
+    >
+      View all on Google Scholar ↗
+    </a>
+  </div>
+
+  <ul className="mt-4 space-y-6">
+    {PUBLICATIONS.slice(0, pubCount).map((p, i) => (
+      <li
+        key={i}
+        className="rounded-2xl border border-neutral-200 p-4 dark:border-neutral-800"
+      >
+        <div className="text-base font-medium">{p.title}</div>
+        <div className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+          {p.authors} · {p.venue} · {p.year}
+        </div>
+        {p.links?.length ? (
+          <div className="mt-2 flex flex-wrap gap-3 text-sm">
+            {p.links.map((l) => (
+              <a
+                key={l.label}
+                href={l.href}
+                className="rounded-md underline-offset-4 hover:underline"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                {l.label}
+              </a>
+            ))}
+          </div>
+        ) : null}
+      </li>
+    ))}
+  </ul>
+
+  <div className="mt-4 flex gap-3">
+    {pubCount < PUBLICATIONS.length ? (
+      <button
+        onClick={showMore}
+        className="rounded-xl border border-neutral-300 px-4 py-2 text-sm shadow-sm hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-900"
+      >
+        Show more
+      </button>
+    ) : null}
+    {pubCount > 2 ? (
+      <button
+        onClick={showLess}
+        className="rounded-xl border border-neutral-300 px-4 py-2 text-sm shadow-sm hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-900"
+      >
+        Show less
+      </button>
+    ) : null}
+  </div>
+</section>
+
+<Divider />
+
 
           {/* Projects */}
           <section id="projects" className="scroll-mt-24">
             <SectionTitle>Projects</SectionTitle>
             <div className="mt-4 grid gap-4 md:grid-cols-2">
-              {PROJECTS.map((pr) => (
-                <article key={pr.title} className="rounded-2xl border border-neutral-200 p-4 shadow-sm transition hover:shadow-md dark:border-neutral-800">
-                  <h3 className="font-medium">{pr.title}</h3>
-                  <p className="mt-1 text-sm text-neutral-700 dark:text-neutral-300">{pr.blurb}</p>
-                  {pr.tags?.length ? (
-                    <div className="mt-2 flex flex-wrap gap-2 text-xs text-neutral-500">
-                      {pr.tags.map((t) => (
-                        <span key={t} className="rounded-full border border-neutral-300 px-2 py-0.5 dark:border-neutral-700">
-                          {t}
-                        </span>
-                      ))}
+              {PROJECTS.map((pr) => {
+                const hasRelated = Array.isArray((pr as any).relatedPubIds) && (pr as any).relatedPubIds.length > 0;
+                const panelId = `related-${slugify(pr.title)}`;
+                const isOpen = !!openRelated[pr.title];
+                return (
+                  <article
+                    key={pr.title}
+                    className="rounded-2xl border border-neutral-200 p-4 shadow-sm transition hover:shadow-md dark:border-neutral-800"
+                  >
+                    <h3 className="font-medium">{pr.title}</h3>
+                    <p className="mt-1 text-sm text-neutral-700 dark:text-neutral-300">
+                      {pr.blurb}
+                    </p>
+
+                    {/* Tags */}
+                    {pr.tags?.length ? (
+                      <div className="mt-2 flex flex-wrap gap-2 text-xs text-neutral-500">
+                        {pr.tags.map((t) => (
+                          <span
+                            key={t}
+                            className="rounded-full border border-neutral-300 px-2 py-0.5 dark:border-neutral-700"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
+
+                    {/* Learn more link */}
+                    <div className="mt-3">
+                      <a
+                        href={pr.link}
+                        className="text-sm underline underline-offset-4 hover:no-underline"
+                        target="_blank"
+                        rel="noreferrer noopener"
+                      >
+                        Learn more →
+                      </a>
                     </div>
-                  ) : null}
-                  <div className="mt-3">
-                    <a
-                      href={pr.link}
-                      className="text-sm underline underline-offset-4 hover:no-underline"
-                      target="_blank"
-                      rel="noreferrer noopener"
-                    >
-                      Learn more →
-                    </a>
-                  </div>
-                </article>
-              ))}
+
+                    {/* Toggle related papers */}
+                    {hasRelated ? (
+                      <div className="mt-3">
+                        <button
+                          onClick={() =>
+                            setOpenRelated((s) => ({ ...s, [pr.title]: !s[pr.title] }))
+                          }
+                          aria-expanded={isOpen}
+                          aria-controls={panelId}
+                          className="inline-flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-1.5 text-sm shadow-sm hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-900"
+                        >
+                          <span>{isOpen ? "Hide related papers" : "Show related papers"}</span>
+                          <svg
+                            className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            aria-hidden="true"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </button>
+
+                        <div
+                          id={panelId}
+                          className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-out ${
+                            isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                          }`}
+                        >
+                          <div className="mt-3 rounded-xl border border-neutral-200 p-3 text-sm dark:border-neutral-800">
+                            <div className="mb-2 font-medium">Related papers</div>
+                            <ul className="space-y-1">
+                              {pubsByIds((pr as any).relatedPubIds).map((p) => {
+                                const pl = primaryLink(p);
+                                return (
+                                  <li key={p.id}>
+                                    {pl ? (
+                                      <a
+                                        href={pl.href}
+                                        className="underline underline-offset-4 hover:no-underline"
+                                        target="_blank"
+                                        rel="noreferrer noopener"
+                                      >
+                                        {p.title} · {p.venue} {p.year}
+                                      </a>
+                                    ) : (
+                                      <span>
+                                        {p.title} · {p.venue} {p.year}
+                                      </span>
+                                    )}
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
+                  </article>
+                );
+              })}
             </div>
           </section>
 
