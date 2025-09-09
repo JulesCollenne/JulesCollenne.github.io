@@ -3,11 +3,11 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
-  font-weight: 400;
+  font-weight: 550;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #111111;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -16,7 +16,7 @@
 }
 
 a {
-  font-weight: 500;
+  font-weight: 650;
   color: #27b45b;
   text-decoration: inherit;
 }
@@ -58,11 +58,11 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: #1c7440;
+    background-color: #eeeeee;
   }
   a {
-  font-weight: 500;
+  font-weight: 650;
   color: #1e8747;   /* emerald green */
   text-decoration: inherit;
 }
