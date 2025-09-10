@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import ConsultingCTA from "./ConsultingCTA";
 
 // ---------------------------------------------
 // One-page personal website for Jules Collenne
@@ -87,6 +88,7 @@ const PROJECTS = [
     blurb: "A web game where players guess a movie based on a list of emojis.",
     tags: ["Web", "Game"],
     link: "https://www.guessthemovie.eu/",
+    logo: "/logos/guessthemovie.ico",
   },
   {
     title: "SJ-MAE",
@@ -102,6 +104,7 @@ const PROJECTS = [
     tags: ["Medical AI", "Dermatology", "CAD"],
     link: "https://scholar.google.com/citations?user=TQJRonQAAAAJ&hl=en",
     relatedPubIds: ["reset-icip-2024", "jaad-2024", "jid-2024", "mlmi-2023", "ijms-2022"],
+    logo: "/logos/lesion.png",
   },
   {
     title: "NoRiz",
@@ -109,6 +112,7 @@ const PROJECTS = [
       "A Pac-Man–style maze action game written in Java. Control NoRiz, a sad sushi on a quest to recover lost rice while dodging hungry cats.",
     tags: ["Java", "Game Dev"],
     link: "https://github.com/JulesCollenne/NoRiz",
+    logo: "/logos/noriz.png",
   },
   {
     title: "FoodNow",
@@ -116,6 +120,7 @@ const PROJECTS = [
       "Android food-recommendation app built with Java, PHP, and MySQL. Features recipe search based on the fridge, favorites, and chef’s daily tips.",
     tags: ["Android", "Java", "Full-stack"],
     link: "https://github.com/JulesCollenne/FoodNow",
+    logo: "/logos/sashimi.png",
   },
   {
     title: "GBZMRacing",
@@ -151,7 +156,6 @@ const TEACHING = [
   },
 ];
 
-
 function primaryLink(p: (typeof PUBLICATIONS)[number]) {
   // Prefer DOI/Springer/MDPI when available; otherwise first link.
   if (!p.links?.length) return null;
@@ -167,6 +171,16 @@ function pubsByIds(ids: string[]) {
 function slugify(s: string) {
   return s.toLowerCase().replace(/\W+/g, "-");
 }
+
+function initials(s: string) {
+  return s
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(w => w[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
 
 export default function OnePageSite() {
   useEffect(() => {
@@ -216,7 +230,7 @@ export default function OnePageSite() {
                 />
                 <div>
                   <h1 className="text-2xl font-semibold leading-tight">Jules Collenne</h1>
-                  <p className="text-sm text-neutral-600 dark:text-neutral-400">PhD AI Researcher</p>
+                  <p className="text-sm text-neutral-600 dark:text-neutral-400">PhD AI Researcher and Freelance</p>
                 </div>
               </div>
 
@@ -291,14 +305,18 @@ export default function OnePageSite() {
 
           {/* About / Presentation */}
           <section id="about" className="scroll-mt-24">
-            <h2 className="text-2xl font-semibold">Jules Collenne, PhD – AI Researcher</h2>
-            <p className="mt-3 leading-relaxed text-neutral-700 dark:text-neutral-300">
-              Hey there! My name is Jules Collenne, and I hold a PhD in Artificial Intelligence 🖥️ Applied to Medicine 🩺. My research focuses on computer-aided diagnosis, interpretability of machine learning models, and, in a more general and theoretical manner, unsupervised visual representation learning.
-              <br />
-              <br />
-              🤗 I’m actively seeking an Arxiv endorsement! 📚🔍 Please feel free to contact me via email.
-            </p>
-          </section>
+  <h2 className="text-2xl font-semibold">Jules Collenne, PhD – AI Researcher and Freelance</h2>
+  <p className="mt-3 leading-relaxed text-neutral-700 dark:text-neutral-300">
+  Hey there! I’m Jules Collenne, and I hold a PhD in Artificial Intelligence applied to medicine.
+  <br />
+  My research focuses on machine learning for computer-aided diagnosis, interpretability, and unsupervised visual representation learning.
+  <br />
+  I also take on consulting projects to design and integrate ML pipelines into production systems and research prototypes.
+</p>
+
+  {/* Consulting call-to-action */}
+  <ConsultingCTA />
+</section>
 
           <Divider />
 
@@ -400,36 +418,62 @@ export default function OnePageSite() {
                     key={pr.title}
                     className="rounded-2xl border border-neutral-200 p-4 shadow-sm transition hover:shadow-md dark:border-neutral-800"
                   >
-                    <h3 className="font-medium">{pr.title}</h3>
-                    <p className="mt-1 text-sm text-neutral-700 dark:text-neutral-300">
-                      {pr.blurb}
-                    </p>
+                    <div className="flex items-start justify-between gap-4">
+    {/* Left: text */}
+    <div className="min-w-0 flex-1">
+      <h3 className="font-medium">{pr.title}</h3>
+      <p className="mt-1 text-sm text-neutral-700 dark:text-neutral-300">{pr.blurb}</p>
 
-                    {/* Tags */}
-                    {pr.tags?.length ? (
-                      <div className="mt-2 flex flex-wrap gap-2 text-xs text-neutral-500">
-                        {pr.tags.map((t) => (
-                          <span
-                            key={t}
-                            className="rounded-full border border-neutral-300 px-2 py-0.5 dark:border-neutral-700"
-                          >
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                    ) : null}
+      {/* Tags */}
+      {pr.tags?.length ? (
+        <div className="mt-2 flex flex-wrap gap-2 text-xs text-neutral-500">
+          {pr.tags.map((t) => (
+            <span
+              key={t}
+              className="rounded-full border border-neutral-300 px-2 py-0.5 dark:border-neutral-700"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      ) : null}
 
-                    {/* Learn more link */}
-                    <div className="mt-3">
-                      <a
-                        href={pr.link}
-                        className="text-sm underline underline-offset-4 hover:no-underline"
-                        target="_blank"
-                        rel="noreferrer noopener"
-                      >
-                        Learn more →
-                      </a>
-                    </div>
+      {/* Learn more link */}
+      <div className="mt-3">
+        <a
+          href={pr.link}
+          className="text-sm underline underline-offset-4 hover:no-underline"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          Learn more →
+        </a>
+      </div>
+    </div>
+
+    {/* Right: logo */}
+    <a
+      href={pr.link}
+      target="_blank"
+      rel="noreferrer noopener"
+      className="shrink-0"
+      aria-label={`${pr.title} logo`}
+    >
+      {pr.logo ? (
+        <img
+          src={pr.logo}
+          alt={`${pr.title} logo`}
+          className="h-12 w-12 md:h-16 md:w-16 rounded-xl object-contain bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-2"
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <div className="h-12 w-12 md:h-16 md:w-16 rounded-xl grid place-items-center bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-xs font-semibold text-neutral-600 dark:text-neutral-300">
+          {initials(pr.title)}
+        </div>
+      )}
+    </a>
+  </div>
 
                     {/* Toggle related papers */}
                     {hasRelated ? (
