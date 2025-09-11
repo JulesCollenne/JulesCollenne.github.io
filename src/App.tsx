@@ -4,22 +4,15 @@ import ConsultingCTA from "./ConsultingCTA";
 
 // ---------------------------------------------
 // One-page personal website for Jules Collenne
-// Tech: React + Tailwind CSS
-// - Left static column (photo, bio, socials)
-// - Right scrollable content with sections:
-//   Hero/Presentation, News, Publications (with Show more), Projects, Teaching
-// - Mobile: sidebar collapses to top; content stacks
-// - Dark mode friendly (uses system preference)
 // ---------------------------------------------
 
-// ---- Replace these with your real links/data ----
 const SOCIALS = [
   { label: "GitHub", href: "https://github.com/JulesCollenne" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/jules-collenne/" },
   { label: "Google Scholar", href: "https://scholar.google.com/citations?user=TQJRonQAAAAJ&hl=en" },
   { label: "ORCID", href: "https://orcid.org/0000-0002-7540-0610" },
-  { label: "Stack Overflow", href: "https://stackoverflow.com/users/12384070/sashimid%C3%A9licieux" }, // adjust if needed
-  { label: "Email", href: "mailto:jules.collenne@gmail.com" }, // add if you want a public email
+  { label: "Stack Overflow", href: "https://stackoverflow.com/users/12384070/sashimid%C3%A9licieux" },
+  { label: "Email", href: "mailto:jules.collenne@gmail.com" },
 ];
 
 const NEWS = [
@@ -131,7 +124,6 @@ const PROJECTS = [
   },
 ];
 
-
 const TEACHING = [
   {
     course: "Intro to Programming (Python)",
@@ -157,7 +149,6 @@ const TEACHING = [
 ];
 
 function primaryLink(p: (typeof PUBLICATIONS)[number]) {
-  // Prefer DOI/Springer/MDPI when available; otherwise first link.
   if (!p.links?.length) return null;
   const preferred = p.links.find((l) => /doi\.org|springer\.com|mdpi\.com/i.test(l.href));
   return preferred ?? p.links[0];
@@ -177,10 +168,9 @@ function initials(s: string) {
     .split(/\s+/)
     .filter(Boolean)
     .slice(0, 2)
-    .map(w => w[0]?.toUpperCase() ?? "")
+    .map((w) => w[0]?.toUpperCase() ?? "")
     .join("");
 }
-
 
 export default function OnePageSite() {
   useEffect(() => {
@@ -191,21 +181,17 @@ export default function OnePageSite() {
 
     const container = document.getElementById("clustrmap-container");
     if (container) {
-      container.innerHTML = ""; // clear if already mounted
+      container.innerHTML = "";
       container.appendChild(script);
     }
   }, []);
 
-  const [pubCount, setPubCount] = useState(2); // default visible publications
-  const [openRelated, setOpenRelated] = useState<Record<string, boolean>>({
-    // open by default if you want:
-    // "Melanoma Detection (PhD)": true,
-  });
+  const [pubCount, setPubCount] = useState(2);
+  const [openRelated, setOpenRelated] = useState<Record<string, boolean>>({});
 
   const showMore = () => setPubCount((c) => Math.min(c + 3, PUBLICATIONS.length));
   const showLess = () => setPubCount(2);
 
-  // Utility for date formatting
   const fmt = (d: string) =>
     new Date(d + "T00:00:00").toLocaleDateString(undefined, {
       year: "numeric",
@@ -214,7 +200,8 @@ export default function OnePageSite() {
     });
 
   return (
-    <div className="min-h-screen antialiased">
+    // ⬇️ safety net against stray horizontal overflow
+    <div className="min-h-screen antialiased overflow-x-hidden">
       {/* Layout wrapper */}
       <div className="flex w-full gap-8 px-4 py-8 sm:px-6 lg:px-8">
         {/* Left static column */}
@@ -234,7 +221,7 @@ export default function OnePageSite() {
                 </div>
               </div>
 
-              <p className="mt-4 text-sm leading-relaxed text-neutral-700 dark:text-neutral-300">
+              <p className="mt-4 text-sm leading-relaxed text-neutral-700 dark:text-neutral-300 break-words">
                 I build self-supervised learning systems for vision, apply AI to medecine, explore multi-task pretraining, and prototype optimization tools.
               </p>
 
@@ -296,43 +283,62 @@ export default function OnePageSite() {
                 alt="Jules Collenne headshot"
                 className="h-16 w-16 rounded-2xl object-cover"
               />
-              <div>
-                <h1 className="text-2xl font-semibold">Jules Collenne</h1>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400">AI Researcher</p>
+              <div className="min-w-0">
+                <h1 className="text-2xl font-semibold break-words">Jules Collenne</h1>
+                <p className="text-sm text-neutral-600 dark:text-neutral-400 break-words">AI Researcher</p>
               </div>
             </div>
           </header>
 
           {/* About / Presentation */}
           <section id="about" className="scroll-mt-24">
-  <h2 className="text-2xl font-semibold">Jules Collenne, PhD – AI Researcher and Freelance</h2>
-  <p className="mt-3 leading-relaxed text-neutral-700 dark:text-neutral-300">
-  Hey there! I’m Jules Collenne, and I hold a PhD in Artificial Intelligence applied to medicine.
-  <br />
-  My research focuses on machine learning for computer-aided diagnosis, interpretability, and unsupervised visual representation learning.
-  <br />
-  I also take on consulting projects to design and integrate ML pipelines into production systems and research prototypes.
-</p>
-<br />
-  {/* Consulting call-to-action */}
-  <ConsultingCTA />
-</section>
-<Divider />
-          {/* References slider */}
-<div className="mt-6 overflow-x-auto">
-  <ul className="flex gap-4 pb-2">
+            <h2 className="text-2xl font-semibold break-words">Jules Collenne, PhD – AI Researcher and Freelance</h2>
+            <p className="mt-3 leading-relaxed text-neutral-700 dark:text-neutral-300 break-words">
+              Hey there! I’m Jules Collenne, and I hold a PhD in Artificial Intelligence applied to medicine.
+              <br />
+              My research focuses on machine learning for computer-aided diagnosis, interpretability, and unsupervised visual representation learning.
+              <br />
+              I also take on consulting projects to design and integrate ML pipelines into production systems and research prototypes.
+            </p>
+            <br />
+            {/* Consulting call-to-action */}
+            <ConsultingCTA />
+          </section>
+
+          <Divider />
+
+          {/* References slider (shrink on mobile) */}
+<div className="mt-6 w-full">
+  <ul
+    className="
+      flex flex-wrap gap-3
+      /* if you still want horizontal scrolling on larger screens, uncomment next line */
+      /* sm:flex-nowrap sm:overflow-x-auto sm:overscroll-x-contain */
+    "
+  >
     {[
       { name: "🎬 GuessTheMovie", href: "https://www.guessthemovie.eu" },
       { name: "📚 My e-Books", href: "https://julesphere354.gumroad.com/" },
       { name: "💼 Fiverr Page", href: "https://www.fiverr.com/s/o8ZNge8" },
       { name: "🎓 Private lessons", href: "https://www.superprof.fr/diplome-doctorat-intelligence-artificielle-universite-aix-marseille-enseigne-programmation-python-java.html" },
     ].map((ref) => (
-      <li key={ref.href}>
+      <li
+        key={ref.href}
+        className="min-w-0 basis-[calc(50%-0.375rem)] sm:flex-[0_1_auto]"
+      >
         <a
           href={ref.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="block whitespace-nowrap rounded-lg bg-neutral-100 dark:bg-neutral-800 px-4 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-200 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
+          className="
+            block w-full text-center
+            rounded-lg px-4 py-2 text-sm font-medium
+            bg-neutral-100 text-neutral-700 hover:bg-neutral-200
+            dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700
+            transition-colors
+            truncate
+          "
+          title={ref.name}
         >
           {ref.name}
         </a>
@@ -341,9 +347,8 @@ export default function OnePageSite() {
   </ul>
 </div>
 
-<Divider />
 
-
+          <Divider />
 
           {/* News */}
           <section id="news" className="scroll-mt-24">
@@ -354,7 +359,10 @@ export default function OnePageSite() {
                   <span className="mt-0.5 shrink-0 text-xs tabular-nums text-neutral-500 w-24">
                     {fmt(n.date)}
                   </span>
-                  <p className="leading-relaxed">{n.text}</p>
+                  {/* ⬇️ allow text to shrink/wrap inside flex row */}
+                  <p className="leading-relaxed flex-1 min-w-0 break-words">
+                    {n.text}
+                  </p>
                 </li>
               ))}
             </ul>
@@ -363,72 +371,70 @@ export default function OnePageSite() {
           <Divider />
 
           {/* Publications with Show More */}
-<section id="publications" className="scroll-mt-24">
-  <SectionTitle>Publications</SectionTitle>
+          <section id="publications" className="scroll-mt-24">
+            <SectionTitle>Publications</SectionTitle>
 
-  {/* Scholar link just under the title */}
-  <div className="mt-1">
-    <a
-      href="https://scholar.google.com/citations?user=TQJRonQAAAAJ&hl=en"
-      target="_blank"
-      rel="noreferrer noopener"
-      className="inline-flex items-center gap-1 rounded-lg border border-neutral-300 px-2.5 py-1 text-xs text-neutral-700 underline-offset-4 hover:bg-neutral-50 hover:underline dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-900"
-    >
-      View all on Google Scholar ↗
-    </a>
-  </div>
-
-  <ul className="mt-4 space-y-6">
-    {PUBLICATIONS.slice(0, pubCount).map((p, i) => (
-      <li
-        key={i}
-        className="rounded-2xl border border-neutral-200 p-4 dark:border-neutral-800"
-      >
-        <div className="text-base font-medium">{p.title}</div>
-        <div className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
-          {p.authors} · {p.venue} · {p.year}
-        </div>
-        {p.links?.length ? (
-          <div className="mt-2 flex flex-wrap gap-3 text-sm">
-            {p.links.map((l) => (
+            <div className="mt-1">
               <a
-                key={l.label}
-                href={l.href}
-                className="rounded-md underline-offset-4 hover:underline"
+                href="https://scholar.google.com/citations?user=TQJRonQAAAAJ&hl=en"
                 target="_blank"
                 rel="noreferrer noopener"
+                className="inline-flex items-center gap-1 rounded-lg border border-neutral-300 px-2.5 py-1 text-xs text-neutral-700 underline-offset-4 hover:bg-neutral-50 hover:underline dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-900"
               >
-                {l.label}
+                View all on Google Scholar ↗
               </a>
-            ))}
-          </div>
-        ) : null}
-      </li>
-    ))}
-  </ul>
+            </div>
 
-  <div className="mt-4 flex gap-3">
-    {pubCount < PUBLICATIONS.length ? (
-      <button
-        onClick={showMore}
-        className="rounded-xl border border-neutral-300 px-4 py-2 text-sm shadow-sm hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-900"
-      >
-        Show more
-      </button>
-    ) : null}
-    {pubCount > 2 ? (
-      <button
-        onClick={showLess}
-        className="rounded-xl border border-neutral-300 px-4 py-2 text-sm shadow-sm hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-900"
-      >
-        Show less
-      </button>
-    ) : null}
-  </div>
-</section>
+            <ul className="mt-4 space-y-6">
+              {PUBLICATIONS.slice(0, pubCount).map((p, i) => (
+                <li
+                  key={i}
+                  className="rounded-2xl border border-neutral-200 p-4 dark:border-neutral-800"
+                >
+                  <div className="text-base font-medium break-words">{p.title}</div>
+                  <div className="mt-1 text-sm text-neutral-600 dark:text-neutral-400 break-words">
+                    {p.authors} · {p.venue} · {p.year}
+                  </div>
+                  {p.links?.length ? (
+                    <div className="mt-2 flex flex-wrap gap-3 text-sm">
+                      {p.links.map((l) => (
+                        <a
+                          key={l.label}
+                          href={l.href}
+                          className="rounded-md underline-offset-4 hover:underline"
+                          target="_blank"
+                          rel="noreferrer noopener"
+                        >
+                          {l.label}
+                        </a>
+                      ))}
+                    </div>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
 
-<Divider />
+            <div className="mt-4 flex gap-3">
+              {pubCount < PUBLICATIONS.length ? (
+                <button
+                  onClick={showMore}
+                  className="rounded-xl border border-neutral-300 px-4 py-2 text-sm shadow-sm hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-900"
+                >
+                  Show more
+                </button>
+              ) : null}
+              {pubCount > 2 ? (
+                <button
+                  onClick={showLess}
+                  className="rounded-xl border border-neutral-300 px-4 py-2 text-sm shadow-sm hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-900"
+                >
+                  Show less
+                </button>
+              ) : null}
+            </div>
+          </section>
 
+          <Divider />
 
           {/* Projects */}
           <section id="projects" className="scroll-mt-24">
@@ -444,61 +450,61 @@ export default function OnePageSite() {
                     className="rounded-2xl border border-neutral-200 p-4 shadow-sm transition hover:shadow-md dark:border-neutral-800"
                   >
                     <div className="flex items-start justify-between gap-4">
-    {/* Left: text */}
-    <div className="min-w-0 flex-1">
-      <h3 className="font-medium">{pr.title}</h3>
-      <p className="mt-1 text-sm text-neutral-700 dark:text-neutral-300">{pr.blurb}</p>
+                      {/* Left: text */}
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-medium break-words">{pr.title}</h3>
+                        <p className="mt-1 text-sm text-neutral-700 dark:text-neutral-300 break-words">{pr.blurb}</p>
 
-      {/* Tags */}
-      {pr.tags?.length ? (
-        <div className="mt-2 flex flex-wrap gap-2 text-xs text-neutral-500">
-          {pr.tags.map((t) => (
-            <span
-              key={t}
-              className="rounded-full border border-neutral-300 px-2 py-0.5 dark:border-neutral-700"
-            >
-              {t}
-            </span>
-          ))}
-        </div>
-      ) : null}
+                        {/* Tags */}
+                        {pr.tags?.length ? (
+                          <div className="mt-2 flex flex-wrap gap-2 text-xs text-neutral-500">
+                            {pr.tags.map((t) => (
+                              <span
+                                key={t}
+                                className="rounded-full border border-neutral-300 px-2 py-0.5 dark:border-neutral-700"
+                              >
+                                {t}
+                              </span>
+                            ))}
+                          </div>
+                        ) : null}
 
-      {/* Learn more link */}
-      <div className="mt-3">
-        <a
-          href={pr.link}
-          className="text-sm underline underline-offset-4 hover:no-underline"
-          target="_blank"
-          rel="noreferrer noopener"
-        >
-          Learn more →
-        </a>
-      </div>
-    </div>
+                        {/* Learn more link */}
+                        <div className="mt-3">
+                          <a
+                            href={pr.link}
+                            className="text-sm underline underline-offset-4 hover:no-underline"
+                            target="_blank"
+                            rel="noreferrer noopener"
+                          >
+                            Learn more →
+                          </a>
+                        </div>
+                      </div>
 
-    {/* Right: logo */}
-    <a
-      href={pr.link}
-      target="_blank"
-      rel="noreferrer noopener"
-      className="shrink-0"
-      aria-label={`${pr.title} logo`}
-    >
-      {pr.logo ? (
-        <img
-          src={pr.logo}
-          alt={`${pr.title} logo`}
-          className="h-12 w-12 md:h-16 md:w-16 rounded-xl object-contain bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-2"
-          loading="lazy"
-          decoding="async"
-        />
-      ) : (
-        <div className="h-12 w-12 md:h-16 md:w-16 rounded-xl grid place-items-center bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-xs font-semibold text-neutral-600 dark:text-neutral-300">
-          {initials(pr.title)}
-        </div>
-      )}
-    </a>
-  </div>
+                      {/* Right: logo */}
+                      <a
+                        href={pr.link}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="shrink-0"
+                        aria-label={`${pr.title} logo`}
+                      >
+                        {pr.logo ? (
+                          <img
+                            src={pr.logo}
+                            alt={`${pr.title} logo`}
+                            className="h-12 w-12 md:h-16 md:w-16 rounded-xl object-contain bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-2"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : (
+                          <div className="h-12 w-12 md:h-16 md:w-16 rounded-xl grid place-items-center bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-xs font-semibold text-neutral-600 dark:text-neutral-300">
+                            {initials(pr.title)}
+                          </div>
+                        )}
+                      </a>
+                    </div>
 
                     {/* Toggle related papers */}
                     {hasRelated ? (
@@ -538,7 +544,7 @@ export default function OnePageSite() {
                               {pubsByIds((pr as any).relatedPubIds).map((p) => {
                                 const pl = primaryLink(p);
                                 return (
-                                  <li key={p.id}>
+                                  <li key={p.id} className="break-words">
                                     {pl ? (
                                       <a
                                         href={pl.href}
@@ -575,12 +581,13 @@ export default function OnePageSite() {
             <ul className="mt-4 space-y-4">
               {TEACHING.map((t) => (
                 <li key={t.course} className="rounded-2xl border border-neutral-200 p-4 dark:border-neutral-800">
-                  <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <h3 className="font-medium">{t.course}</h3>
+                  {/* ⬇️ allow row to wrap safely */}
+                  <div className="flex flex-wrap items-baseline justify-between gap-2 min-w-0">
+                    <h3 className="font-medium break-words">{t.course}</h3>
                     <div className="text-xs text-neutral-500">{t.years}</div>
                   </div>
-                  <div className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">{t.role}</div>
-                  <p className="mt-2 text-sm text-neutral-700 dark:text-neutral-300">{t.details}</p>
+                  <div className="mt-1 text-sm text-neutral-600 dark:text-neutral-400 break-words">{t.role}</div>
+                  <p className="mt-2 text-sm text-neutral-700 dark:text-neutral-300 break-words">{t.details}</p>
                 </li>
               ))}
             </ul>
