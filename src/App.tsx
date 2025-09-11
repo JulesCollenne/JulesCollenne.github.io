@@ -313,12 +313,37 @@ export default function OnePageSite() {
   <br />
   I also take on consulting projects to design and integrate ML pipelines into production systems and research prototypes.
 </p>
-
+<br />
   {/* Consulting call-to-action */}
   <ConsultingCTA />
 </section>
+<Divider />
+          {/* References slider */}
+<div className="mt-6 overflow-x-auto">
+  <ul className="flex gap-4 pb-2">
+    {[
+      { name: "🎬 GuessTheMovie", href: "https://www.guessthemovie.eu" },
+      { name: "📚 My e-Books", href: "https://julesphere354.gumroad.com/" },
+      { name: "💼 Fiverr Page", href: "https://www.fiverr.com/s/o8ZNge8" },
+      { name: "🎓 Private lessons", href: "https://www.superprof.fr/diplome-doctorat-intelligence-artificielle-universite-aix-marseille-enseigne-programmation-python-java.html" },
+    ].map((ref) => (
+      <li key={ref.href}>
+        <a
+          href={ref.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block whitespace-nowrap rounded-lg bg-neutral-100 dark:bg-neutral-800 px-4 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-200 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
+        >
+          {ref.name}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
 
-          <Divider />
+<Divider />
+
+
 
           {/* News */}
           <section id="news" className="scroll-mt-24">
