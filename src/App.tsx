@@ -16,6 +16,7 @@ const SOCIALS = [
 ];
 
 const NEWS = [
+  { date: "2025-09-01", text: "Launched my consulting company in AI & Data Science 🚀" },
   { date: "2024-12-01", text: "Officially earned my PhD in AI applied to medicine!" },
   { date: "2024-06-01", text: "Our work was accepted for presentation at ICIP 2024." },
   { date: "2024-05-01", text: "Served as reviewer for MICCAI 2024 and BMVC 2024." },
@@ -173,6 +174,14 @@ function initials(s: string) {
 }
 
 export default function OnePageSite() {
+    const [newsCount, setNewsCount] = useState(5);
+    const sortedNews = React.useMemo(
+      () => [...NEWS].sort((a, b) => b.date.localeCompare(a.date)), // newest first
+      []
+    );
+    const showMoreNews = () => setNewsCount((n) => Math.min(n + 5, sortedNews.length));
+    const collapseNews = () => setNewsCount(5);
+    const hasMoreNews = newsCount < sortedNews.length;
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "//clustrmaps.com/globe.js?d=zyT_D9l9lZVUoIn2kwibM4SiArPSNyX605T1uE28GZo";
@@ -352,21 +361,40 @@ export default function OnePageSite() {
 
           {/* News */}
           <section id="news" className="scroll-mt-24">
-            <SectionTitle>News</SectionTitle>
-            <ul className="mt-3 space-y-3">
-              {NEWS.map((n) => (
-                <li key={n.date} className="flex gap-3">
-                  <span className="mt-0.5 shrink-0 text-xs tabular-nums text-neutral-500 w-24">
-                    {fmt(n.date)}
-                  </span>
-                  {/* ⬇️ allow text to shrink/wrap inside flex row */}
-                  <p className="leading-relaxed flex-1 min-w-0 break-words">
-                    {n.text}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </section>
+          <SectionTitle>News</SectionTitle>
+
+          <ul className="mt-3 space-y-3">
+            {sortedNews.slice(0, newsCount).map((n) => (
+              <li key={n.date} className="flex gap-3">
+                <span className="mt-0.5 shrink-0 text-xs tabular-nums text-neutral-500 w-24">
+                  {fmt(n.date)}
+                </span>
+                <p className="leading-relaxed flex-1 min-w-0 break-words">{n.text}</p>
+              </li>
+            ))}
+          </ul>
+
+<div className="mt-3 flex gap-4 text-sm">
+  {hasMoreNews && (
+    <span
+      onClick={showMoreNews}
+      className="text-neutral-500 hover:text-neutral-700 hover:underline cursor-pointer"
+    >
+      See more →
+    </span>
+  )}
+  {newsCount > 5 && (
+    <span
+      onClick={collapseNews}
+      className="text-neutral-500 hover:text-neutral-700 hover:underline cursor-pointer"
+    >
+      ← See less
+    </span>
+  )}
+</div>
+
+
+        </section>
 
           <Divider />
 
