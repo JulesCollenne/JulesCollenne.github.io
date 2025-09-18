@@ -17,6 +17,7 @@ const SOCIALS = [
 
 const NEWS = [
   { date: "2025-09-01", text: "Launched my consulting company in AI & Data Science 🚀" },
+  { date: "2025-07-23", text: "Submitted Sj-Mae: Unified Multi-Task Pretraining of Vision Transformers Via Masked, Jigsaw and Contrastive Objectives in Neurocomputing!", url: "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5349677" },
   { date: "2024-12-01", text: "Officially earned my PhD in AI applied to medicine!" },
   { date: "2024-06-01", text: "Our work was accepted for presentation at ICIP 2024." },
   { date: "2024-05-01", text: "Served as reviewer for MICCAI 2024 and BMVC 2024." },
@@ -369,7 +370,23 @@ export default function OnePageSite() {
                 <span className="mt-0.5 shrink-0 text-xs tabular-nums text-neutral-500 w-24">
                   {fmt(n.date)}
                 </span>
-                <p className="leading-relaxed flex-1 min-w-0 break-words">{n.text}</p>
+                <p className="leading-relaxed flex-1 min-w-0 break-words">
+  {n.text}
+  {n.url && (
+    <>
+      {" "}
+      <a
+        href={n.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-sm text-blue-600 underline hover:no-underline dark:text-blue-400"
+      >
+        (link)
+      </a>
+    </>
+  )}
+</p>
+
               </li>
             ))}
           </ul>
