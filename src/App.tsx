@@ -212,50 +212,57 @@ function Controls({
   setTheme: (t: Theme) => void;
 }) {
   return (
-    <div className="fixed right-4 top-4 z-[9999] flex gap-2">
-      {/* Language pill */}
-      <button
-        aria-label="Toggle language"
-        onClick={() => {
-          const next = lang === "en" ? ("fr" as Lang) : ("en" as Lang);
-          setLang(next);
-          saveLang(next);
-        }}
-        className="
-          flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm backdrop-blur shadow-sm
-          border-neutral-300 bg-white/90 text-neutral-900 hover:bg-white
-          dark:border-neutral-700 dark:bg-neutral-900/80 dark:text-neutral-100 dark:hover:bg-neutral-900
-        "
-      >
-        <span className="text-xs tabular-nums font-medium">
-          {lang === "en" ? "EN" : "FR"}
-        </span>
-        <span className="text-neutral-400">|</span>
-        <span className="text-xs">
-          {lang === "en" ? "FR" : "EN"}
-        </span>
-      </button>
+  <div
+    className="
+      fixed z-[9999] flex gap-1.5 sm:gap-2
+      bottom-3 right-3                     /* 📱 phones: bottom-right */
+      sm:bottom-auto sm:top-4 sm:right-4   /* 💻 ≥sm: top-right */
+      pr-[max(0px,env(safe-area-inset-right))]
+      pb-[max(0px,env(safe-area-inset-bottom))]
+    "
+  >
+    {/* Language pill */}
+    <button
+      aria-label="Toggle language"
+      onClick={() => {
+        const next = lang === "en" ? ("fr" as Lang) : ("en" as Lang);
+        setLang(next);
+        saveLang(next);
+      }}
+      className="
+        flex items-center gap-2 rounded-full border backdrop-blur shadow-sm
+        px-2.5 py-1 text-xs              /* 📱 compact on phones */
+        sm:px-3 sm:py-1.5 sm:text-sm     /* 💻 normal on desktop */
+        border-neutral-300 bg-white/90 text-neutral-900 hover:bg-white
+        dark:border-neutral-700 dark:bg-neutral-900/80 dark:text-neutral-100 dark:hover:bg-neutral-900
+      "
+    >
+      <span className="tabular-nums font-medium">{lang === "en" ? "EN" : "FR"}</span>
+      <span className="text-neutral-400">|</span>
+      <span>{lang === "en" ? "FR" : "EN"}</span>
+    </button>
 
-      {/* Theme pill */}
-      <button
-        aria-label="Toggle color theme"
-        aria-pressed={theme === "dark"}
-        onClick={() => {
-          const next = toggleTheme();   // flips <html>.dark + saves
-          setTheme(next);
-        }}
-        className="
-          flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm backdrop-blur shadow-sm
-          border-neutral-300 bg-white/90 text-neutral-900 hover:bg-white
-          dark:border-neutral-700 dark:bg-neutral-900/80 dark:text-neutral-100 dark:hover:bg-neutral-900
-        "
-      >
-        <span className="text-xs font-medium">
-          {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
-        </span>
-      </button>
-    </div>
-  );
+    {/* Theme pill */}
+    <button
+      aria-label="Toggle color theme"
+      aria-pressed={theme === "dark"}
+      onClick={() => {
+        const next = toggleTheme(); // flips <html>.dark + saves
+        setTheme(next);
+      }}
+      className="
+        flex items-center gap-2 rounded-full border backdrop-blur shadow-sm
+        px-2.5 py-1 text-xs
+        sm:px-3 sm:py-1.5 sm:text-sm
+        border-neutral-300 bg-white/90 text-neutral-900 hover:bg-white
+        dark:border-neutral-700 dark:bg-neutral-900/80 dark:text-neutral-100 dark:hover:bg-neutral-900
+      "
+    >
+      <span className="font-medium">{theme === "dark" ? "🌙 Dark" : "☀️ Light"}</span>
+    </button>
+  </div>
+);
+
 }
 
 
