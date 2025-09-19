@@ -1,6 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import ConsultingCTA from "./ConsultingCTA";
+import { detectLang, saveLang, t } from "./i18n";
+import type { Lang } from "./i18n";
+import BackgroundNet from "./BackgroundNet";
+import type { Theme } from "./theme";
+import { getThemeFromDOM, getInitialTheme, applyTheme, toggleTheme } from "./theme";
+
 
 // ---------------------------------------------
 // One-page personal website for Jules Collenne
@@ -81,22 +87,29 @@ const PUBLICATIONS = [
 const PROJECTS = [
   {
     title: "Guess the Movie (Web)",
-    blurb: "A web game where players guess a movie based on a list of emojis.",
+    blurb: {
+      en: "A web game where players guess a movie based on a list of emojis.",
+      fr: "Un jeu web où l’on devine un film à partir d’une liste d’emojis.",
+    },
     tags: ["Web", "Game"],
     link: "https://www.guessthemovie.eu/",
     logo: "/logos/guessthemovie.ico",
   },
   {
     title: "SJ-MAE",
-    blurb:
-      "Multi-task ViT pretraining combining masked reconstruction, jigsaw, and contrastive objectives.",
+    blurb: {
+      en: "Multi-task ViT pretraining combining masked reconstruction, jigsaw, and contrastive objectives.",
+      fr: "Pré-entraînement ViT multi-tâches combinant reconstruction masquée, puzzle « jigsaw » et objectifs contrastifs.",
+    },
     tags: ["Vision Transformers", "SSL"],
     link: "https://github.com/JulesCollenne/SJ-MAE",
   },
   {
     title: "Melanoma Detection (PhD)",
-    blurb:
-      "End-to-end computer-aided diagnosis for dermoscopy: asymmetry cues, lesion comparison, and self-supervised pretraining to improve melanoma detection and interpretability.",
+    blurb: {
+      en: "End-to-end computer-aided diagnosis for dermoscopy: asymmetry cues, lesion comparison, and self-supervised pretraining to improve melanoma detection and interpretability.",
+      fr: "Aide au diagnostic de bout en bout en dermoscopie : asymétries, comparaison de lésions et pré-entraînement auto-supervisé pour améliorer la détection du mélanome et l’interprétabilité.",
+    },
     tags: ["Medical AI", "Dermatology", "CAD"],
     link: "https://scholar.google.com/citations?user=TQJRonQAAAAJ&hl=en",
     relatedPubIds: ["reset-icip-2024", "jaad-2024", "jid-2024", "mlmi-2023", "ijms-2022"],
@@ -104,24 +117,30 @@ const PROJECTS = [
   },
   {
     title: "NoRiz",
-    blurb:
-      "A Pac-Man–style maze action game written in Java. Control NoRiz, a sad sushi on a quest to recover lost rice while dodging hungry cats.",
+    blurb: {
+      en: "A Pac-Man–style maze action game written in Java. Control NoRiz, a sad sushi on a quest to recover lost rice while dodging hungry cats.",
+      fr: "Un jeu d’action labyrinthe façon Pac-Man en Java. Incarnez NoRiz, un sushi triste en quête de riz perdu tout en évitant des chats affamés.",
+    },
     tags: ["Java", "Game Dev"],
     link: "https://github.com/JulesCollenne/NoRiz",
     logo: "/logos/noriz.png",
   },
   {
     title: "FoodNow",
-    blurb:
-      "Android food-recommendation app built with Java, PHP, and MySQL. Features recipe search based on the fridge, favorites, and chef’s daily tips.",
+    blurb: {
+      en: "Android food-recommendation app built with Java, PHP, and MySQL. Features recipe search based on the fridge, favorites, and chef’s daily tips.",
+      fr: "Application Android de recommandation culinaire (Java, PHP, MySQL). Recherche de recettes selon le frigo, favoris et astuces du chef.",
+    },
     tags: ["Android", "Java", "Full-stack"],
     link: "https://github.com/JulesCollenne/FoodNow",
     logo: "/logos/sashimi.png",
   },
   {
     title: "GBZMRacing",
-    blurb:
-      "“GaBuZoMeu Racing”: an immersive racing game in C with GTK+, featuring a custom-made engine to create and play your own car races.",
+    blurb: {
+      en: "“GaBuZoMeu Racing”: an immersive racing game in C with GTK+, featuring a custom-made engine to create and play your own car races.",
+      fr: "« GaBuZoMeu Racing » : un jeu de course immersif en C avec GTK+, incluant un moteur maison pour créer et jouer vos propres circuits.",
+    },
     tags: ["C", "Game Dev", "GTK+"],
     link: "https://github.com/JulesCollenne/GBZMRacing",
   },
@@ -129,25 +148,31 @@ const PROJECTS = [
 
 const TEACHING = [
   {
-    course: "Intro to Programming (Python)",
-    role: "Lecturer / TA",
+    course: { en: "Intro to Programming (Python)", fr: "Introduction à la programmation (Python)" },
+    role:   { en: "Lecturer / TA",                  fr: "Enseignant / Tuteur" },
     years: "2023–2025",
-    details:
-      "Taught introductory and advanced Python, including recursion, trees, and algorithmic puzzles.",
+    details: {
+      en: "Taught introductory and advanced Python, including recursion, trees, and algorithmic puzzles.",
+      fr: "Cours de Python (débutant et avancé) : récursivité, arbres, énigmes algorithmiques.",
+    },
   },
   {
-    course: "Systems Programming (C)",
-    role: "TA",
+    course: { en: "Systems Programming (C)", fr: "Programmation systèmes (C)" },
+    role:   { en: "TA",                      fr: "Tuteur" },
     years: "2024–2025",
-    details:
-      "Taught C programming, focusing on memory management and file processing.",
+    details: {
+      en: "Taught C programming, focusing on memory management and file processing.",
+      fr: "Programmation en C, avec un focus sur la gestion mémoire et le traitement de fichiers.",
+    },
   },
   {
-    course: "Databases (SQL)",
-    role: "TA",
+    course: { en: "Databases (SQL)", fr: "Bases de données (SQL)" },
+    role:   { en: "TA",              fr: "Tuteur" },
     years: "2022–2025",
-    details:
-      "Taught advanced SQL to 1st-, 2nd-, and 3rd-year students using MySQL and Oracle.",
+    details: {
+      en: "Taught advanced SQL to 1st-, 2nd-, and 3rd-year students using MySQL and Oracle.",
+      fr: "SQL avancé (L1, L2, L3) avec MySQL et Oracle.",
+    },
   },
 ];
 
@@ -175,15 +200,92 @@ function initials(s: string) {
     .join("");
 }
 
+function Controls({
+  lang,
+  setLang,
+  theme,
+  setTheme,
+}: {
+  lang: Lang;
+  setLang: (l: Lang) => void;
+  theme: Theme;
+  setTheme: (t: Theme) => void;
+}) {
+  return (
+    <div className="fixed right-4 top-4 z-[9999] flex gap-2">
+      {/* Language pill */}
+      <button
+        aria-label="Toggle language"
+        onClick={() => {
+          const next = lang === "en" ? ("fr" as Lang) : ("en" as Lang);
+          setLang(next);
+          saveLang(next);
+        }}
+        className="
+          flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm backdrop-blur shadow-sm
+          border-neutral-300 bg-white/90 text-neutral-900 hover:bg-white
+          dark:border-neutral-700 dark:bg-neutral-900/80 dark:text-neutral-100 dark:hover:bg-neutral-900
+        "
+      >
+        <span className="text-xs tabular-nums font-medium">
+          {lang === "en" ? "EN" : "FR"}
+        </span>
+        <span className="text-neutral-400">|</span>
+        <span className="text-xs">
+          {lang === "en" ? "FR" : "EN"}
+        </span>
+      </button>
+
+      {/* Theme pill */}
+      <button
+        aria-label="Toggle color theme"
+        aria-pressed={theme === "dark"}
+        onClick={() => {
+          const next = toggleTheme();   // flips <html>.dark + saves
+          setTheme(next);
+        }}
+        className="
+          flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm backdrop-blur shadow-sm
+          border-neutral-300 bg-white/90 text-neutral-900 hover:bg-white
+          dark:border-neutral-700 dark:bg-neutral-900/80 dark:text-neutral-100 dark:hover:bg-neutral-900
+        "
+      >
+        <span className="text-xs font-medium">
+          {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
+        </span>
+      </button>
+    </div>
+  );
+}
+
+
 export default function OnePageSite() {
-    const [newsCount, setNewsCount] = useState(5);
-    const sortedNews = React.useMemo(
-      () => [...NEWS].sort((a, b) => b.date.localeCompare(a.date)), // newest first
-      []
-    );
-    const showMoreNews = () => setNewsCount((n) => Math.min(n + 5, sortedNews.length));
-    const collapseNews = () => setNewsCount(5);
-    const hasMoreNews = newsCount < sortedNews.length;
+  const [lang, setLang] = useState<Lang>("en");
+  useEffect(() => setLang(detectLang()), []);
+
+  const [theme, setTheme] = useState<Theme>(() => getThemeFromDOM());
+  useEffect(() => {
+    // On very first load (if inline script wasn’t present), enforce initial
+    const initial = getInitialTheme();
+    applyTheme(initial);
+    setTheme(getThemeFromDOM());
+  }, []);
+  
+  useEffect(() => {
+    const obs = new MutationObserver(() => setTheme(getThemeFromDOM()));
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => obs.disconnect();
+  }, []);
+
+  const [newsCount, setNewsCount] = useState(5);
+  const sortedNews = React.useMemo(
+    () => [...NEWS].sort((a, b) => b.date.localeCompare(a.date)),
+    []
+  );
+  const showMoreNews = () => setNewsCount((n) => Math.min(n + 5, sortedNews.length));
+  const collapseNews = () => setNewsCount(5);
+  const hasMoreNews = newsCount < sortedNews.length;
+
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "//clustrmaps.com/globe.js?d=zyT_D9l9lZVUoIn2kwibM4SiArPSNyX605T1uE28GZo";
@@ -204,15 +306,26 @@ export default function OnePageSite() {
   const showLess = () => setPubCount(2);
 
   const fmt = (d: string) =>
-    new Date(d + "T00:00:00").toLocaleDateString(undefined, {
+    new Date(d + "T00:00:00").toLocaleDateString(lang === "fr" ? "fr-FR" : undefined, {
       year: "numeric",
       month: "short",
       day: "numeric",
     });
 
   return (
-    // ⬇️ safety net against stray horizontal overflow
-    <div className="min-h-screen antialiased overflow-x-hidden">
+    <div className="min-h-screen antialiased overflow-x-hidden
+                bg-white text-neutral-900
+                dark:bg-neutral-950 dark:text-neutral-100">
+    <BackgroundNet
+      density={0.00005}   // tweak: 0.00003–0.00008
+      connectDist={140}   // tweak: 110–160
+      maxSpeed={0.035}    // lower = calmer
+      dotSize={1.6}       // 1.2–2.0 nice
+      dark={theme === "dark"}
+    />
+    <div className="relative z-10">
+      <Controls lang={lang} setLang={setLang} theme={theme} setTheme={setTheme} />
+
       {/* Layout wrapper */}
       <div className="flex w-full gap-8 px-4 py-8 sm:px-6 lg:px-8">
         {/* Left static column */}
@@ -228,22 +341,24 @@ export default function OnePageSite() {
                 />
                 <div>
                   <h1 className="text-2xl font-semibold leading-tight">Jules Collenne</h1>
-                  <p className="text-sm text-neutral-600 dark:text-neutral-400">PhD AI Researcher and Freelance</p>
+                  <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    {t(lang, "role_full")}
+                  </p>
                 </div>
               </div>
 
               <p className="mt-4 text-sm leading-relaxed text-neutral-700 dark:text-neutral-300 break-words">
-                I build self-supervised learning systems for vision, apply AI to medecine, explore multi-task pretraining, and prototype optimization tools.
+                {t(lang, "tagline")}
               </p>
 
               {/* Quick nav */}
               <nav className="mt-6 space-y-1 text-sm">
                 {[
-                  { id: "about", label: "About" },
-                  { id: "news", label: "News" },
-                  { id: "publications", label: "Publications" },
-                  { id: "projects", label: "Projects" },
-                  { id: "teaching", label: "Teaching" },
+                  { id: "about", label: t(lang, "nav_about") },
+                  { id: "news", label: t(lang, "nav_news") },
+                  { id: "publications", label: t(lang, "nav_pubs") },
+                  { id: "projects", label: t(lang, "nav_projects") },
+                  { id: "teaching", label: t(lang, "nav_teaching") },
                 ].map((s) => (
                   <a
                     key={s.id}
@@ -265,7 +380,9 @@ export default function OnePageSite() {
 
             {/* Socials */}
             <div>
-              <div className="mb-2 text-xs uppercase tracking-wider text-neutral-500">On the web</div>
+              <div className="mb-2 text-xs uppercase tracking-wider text-neutral-500">
+                {t(lang, "on_the_web")}
+              </div>
               <ul className="space-y-2 text-sm">
                 {SOCIALS.map((s) => (
                   <li key={s.label}>
@@ -296,129 +413,120 @@ export default function OnePageSite() {
               />
               <div className="min-w-0">
                 <h1 className="text-2xl font-semibold break-words">Jules Collenne</h1>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 break-words">AI Researcher</p>
+                <p className="text-sm text-neutral-600 dark:text-neutral-400 break-words">
+                  {t(lang, "role_short")}
+                </p>
               </div>
             </div>
           </header>
 
           {/* About / Presentation */}
           <section id="about" className="scroll-mt-24">
-            <h2 className="text-2xl font-semibold break-words">Jules Collenne, PhD – AI Researcher and Freelance</h2>
+            <h2 className="text-2xl font-semibold break-words">{t(lang, "about_h2")}</h2>
             <p className="mt-3 leading-relaxed text-neutral-700 dark:text-neutral-300 break-words">
-              Hey there! I’m Jules Collenne, and I hold a PhD in Artificial Intelligence applied to medicine.
+              {t(lang, "about_p1")}
               <br />
-              My research focuses on machine learning for computer-aided diagnosis, interpretability, and unsupervised visual representation learning.
+              {t(lang, "about_p2")}
               <br />
-              I also take on consulting projects to design and integrate ML pipelines into production systems and research prototypes.
+              {t(lang, "about_p3")}
             </p>
             <br />
-            {/* Consulting call-to-action */}
-            <ConsultingCTA />
+            <ConsultingCTA lang={lang} />
           </section>
 
           <Divider />
 
-          {/* References slider (shrink on mobile) */}
-<div className="mt-6 w-full">
-  <ul
-    className="
-      flex flex-wrap gap-3
-      /* if you still want horizontal scrolling on larger screens, uncomment next line */
-      /* sm:flex-nowrap sm:overflow-x-auto sm:overscroll-x-contain */
-    "
-  >
-    {[
-      { name: "🎬 GuessTheMovie", href: "https://www.guessthemovie.eu" },
-      { name: "📚 My e-Books", href: "https://julesphere354.gumroad.com/" },
-      { name: "💼 Fiverr Page", href: "https://www.fiverr.com/s/o8ZNge8" },
-      { name: "🎓 Private lessons", href: "https://www.superprof.fr/diplome-doctorat-intelligence-artificielle-universite-aix-marseille-enseigne-programmation-python-java.html" },
-    ].map((ref) => (
-      <li
-        key={ref.href}
-        className="min-w-0 basis-[calc(50%-0.375rem)] sm:flex-[0_1_auto]"
-      >
-        <a
-          href={ref.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="
-            block w-full text-center
-            rounded-lg px-4 py-2 text-sm font-medium
-            bg-neutral-100 text-neutral-700 hover:bg-neutral-200
-            dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700
-            transition-colors
-            truncate
-          "
-          title={ref.name}
-        >
-          {ref.name}
-        </a>
-      </li>
-    ))}
-  </ul>
-</div>
-
+          {/* References slider */}
+          <div className="mt-6 w-full">
+            <ul className="flex flex-wrap gap-3">
+              {[
+                { name: t(lang, "refs_title_guessthemovie"), href: "https://www.guessthemovie.eu" },
+                { name: t(lang, "refs_title_ebooks"), href: "https://julesphere354.gumroad.com/" },
+                { name: t(lang, "refs_title_fiverr"), href: "https://www.fiverr.com/s/o8ZNge8" },
+                {
+                  name: t(lang, "refs_title_lessons"),
+                  href: "https://www.superprof.fr/diplome-doctorat-intelligence-artificielle-universite-aix-marseille-enseigne-programmation-python-java.html",
+                },
+              ].map((ref) => (
+                <li key={ref.href} className="min-w-0 basis-[calc(50%-0.375rem)] sm:flex-[0_1_auto]">
+                  <a
+                    href={ref.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="
+                      block w-full text-center
+                      rounded-lg px-4 py-2 text-sm font-medium
+                      bg-neutral-100 text-neutral-700 hover:bg-neutral-200
+                      dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700
+                      transition-colors
+                      truncate
+                    "
+                    title={ref.name}
+                  >
+                    {ref.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <Divider />
 
           {/* News */}
           <section id="news" className="scroll-mt-24">
-          <SectionTitle>News</SectionTitle>
+            <SectionTitle>{t(lang, "nav_news")}</SectionTitle>
 
-          <ul className="mt-3 space-y-3">
-            {sortedNews.slice(0, newsCount).map((n) => (
-              <li key={n.date} className="flex gap-3">
-                <span className="mt-0.5 shrink-0 text-xs tabular-nums text-neutral-500 w-24">
-                  {fmt(n.date)}
+            <ul className="mt-3 space-y-3">
+              {sortedNews.slice(0, newsCount).map((n) => (
+                <li key={n.date} className="flex gap-3">
+                  <span className="mt-0.5 shrink-0 text-xs tabular-nums text-neutral-500 w-24">
+                    {fmt(n.date)}
+                  </span>
+                  <p className="leading-relaxed flex-1 min-w-0 break-words">
+                    {n.text}
+                    {n.url && (
+                      <>
+                        {" "}
+                        <a
+                          href={n.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-blue-600 underline hover:no-underline dark:text-blue-400"
+                        >
+                          (link)
+                        </a>
+                      </>
+                    )}
+                  </p>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-3 flex gap-4 text-sm">
+              {hasMoreNews && (
+                <span
+                  onClick={showMoreNews}
+                  className="text-neutral-500 hover:text-neutral-700 hover:underline cursor-pointer"
+                >
+                  {t(lang, "news_more")}
                 </span>
-                <p className="leading-relaxed flex-1 min-w-0 break-words">
-  {n.text}
-  {n.url && (
-    <>
-      {" "}
-      <a
-        href={n.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-sm text-blue-600 underline hover:no-underline dark:text-blue-400"
-      >
-        (link)
-      </a>
-    </>
-  )}
-</p>
-
-              </li>
-            ))}
-          </ul>
-
-<div className="mt-3 flex gap-4 text-sm">
-  {hasMoreNews && (
-    <span
-      onClick={showMoreNews}
-      className="text-neutral-500 hover:text-neutral-700 hover:underline cursor-pointer"
-    >
-      See more →
-    </span>
-  )}
-  {newsCount > 5 && (
-    <span
-      onClick={collapseNews}
-      className="text-neutral-500 hover:text-neutral-700 hover:underline cursor-pointer"
-    >
-      ← See less
-    </span>
-  )}
-</div>
-
-
-        </section>
+              )}
+              {newsCount > 5 && (
+                <span
+                  onClick={collapseNews}
+                  className="text-neutral-500 hover:text-neutral-700 hover:underline cursor-pointer"
+                >
+                  {t(lang, "news_less")}
+                </span>
+              )}
+            </div>
+          </section>
 
           <Divider />
 
-          {/* Publications with Show More */}
+          {/* Publications */}
           <section id="publications" className="scroll-mt-24">
-            <SectionTitle>Publications</SectionTitle>
+            <SectionTitle>{t(lang, "nav_pubs")}</SectionTitle>
 
             <div className="mt-1">
               <a
@@ -427,7 +535,7 @@ export default function OnePageSite() {
                 rel="noreferrer noopener"
                 className="inline-flex items-center gap-1 rounded-lg border border-neutral-300 px-2.5 py-1 text-xs text-neutral-700 underline-offset-4 hover:bg-neutral-50 hover:underline dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-900"
               >
-                View all on Google Scholar ↗
+                {t(lang, "pubs_view_all")}
               </a>
             </div>
 
@@ -466,7 +574,7 @@ export default function OnePageSite() {
                   onClick={showMore}
                   className="rounded-xl border border-neutral-300 px-4 py-2 text-sm shadow-sm hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-900"
                 >
-                  Show more
+                  {t(lang, "btn_show_more")}
                 </button>
               ) : null}
               {pubCount > 2 ? (
@@ -474,7 +582,7 @@ export default function OnePageSite() {
                   onClick={showLess}
                   className="rounded-xl border border-neutral-300 px-4 py-2 text-sm shadow-sm hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-900"
                 >
-                  Show less
+                  {t(lang, "btn_show_less")}
                 </button>
               ) : null}
             </div>
@@ -484,10 +592,12 @@ export default function OnePageSite() {
 
           {/* Projects */}
           <section id="projects" className="scroll-mt-24">
-            <SectionTitle>Projects</SectionTitle>
+            <SectionTitle>{t(lang, "nav_projects")}</SectionTitle>
             <div className="mt-4 grid gap-4 md:grid-cols-2">
               {PROJECTS.map((pr) => {
-                const hasRelated = Array.isArray((pr as any).relatedPubIds) && (pr as any).relatedPubIds.length > 0;
+                const hasRelated =
+                  Array.isArray((pr as any).relatedPubIds) &&
+                  (pr as any).relatedPubIds.length > 0;
                 const panelId = `related-${slugify(pr.title)}`;
                 const isOpen = !!openRelated[pr.title];
                 return (
@@ -499,7 +609,11 @@ export default function OnePageSite() {
                       {/* Left: text */}
                       <div className="min-w-0 flex-1">
                         <h3 className="font-medium break-words">{pr.title}</h3>
-                        <p className="mt-1 text-sm text-neutral-700 dark:text-neutral-300 break-words">{pr.blurb}</p>
+                        <p className="mt-1 text-sm text-neutral-700 dark:text-neutral-300 break-words">
+                          {typeof pr.blurb === "string"
+                            ? pr.blurb
+                            : pr.blurb[lang]}
+                        </p>
 
                         {/* Tags */}
                         {pr.tags?.length ? (
@@ -523,7 +637,7 @@ export default function OnePageSite() {
                             target="_blank"
                             rel="noreferrer noopener"
                           >
-                            Learn more →
+                            {t(lang, "learn_more")}
                           </a>
                         </div>
                       </div>
@@ -536,9 +650,9 @@ export default function OnePageSite() {
                         className="shrink-0"
                         aria-label={`${pr.title} logo`}
                       >
-                        {pr.logo ? (
+                        {"logo" in pr && pr.logo ? (
                           <img
-                            src={pr.logo}
+                            src={(pr as any).logo}
                             alt={`${pr.title} logo`}
                             className="h-12 w-12 md:h-16 md:w-16 rounded-xl object-contain bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-2"
                             loading="lazy"
@@ -563,7 +677,9 @@ export default function OnePageSite() {
                           aria-controls={panelId}
                           className="inline-flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-1.5 text-sm shadow-sm hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-900"
                         >
-                          <span>{isOpen ? "Hide related papers" : "Show related papers"}</span>
+                          <span>
+                            {isOpen ? t(lang, "related_hide") : t(lang, "related_show")}
+                          </span>
                           <svg
                             className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
                             viewBox="0 0 20 20"
@@ -623,27 +739,31 @@ export default function OnePageSite() {
 
           {/* Teaching */}
           <section id="teaching" className="scroll-mt-24">
-            <SectionTitle>Teaching</SectionTitle>
+            <SectionTitle>{t(lang, "nav_teaching")}</SectionTitle>
             <ul className="mt-4 space-y-4">
-              {TEACHING.map((t) => (
-                <li key={t.course} className="rounded-2xl border border-neutral-200 p-4 dark:border-neutral-800">
-                  {/* ⬇️ allow row to wrap safely */}
+              {TEACHING.map((tch) => (
+                <li key={tch.course.en} className="rounded-2xl border border-neutral-200 p-4 dark:border-neutral-800">
                   <div className="flex flex-wrap items-baseline justify-between gap-2 min-w-0">
-                    <h3 className="font-medium break-words">{t.course}</h3>
-                    <div className="text-xs text-neutral-500">{t.years}</div>
+                    <h3 className="font-medium break-words">{tch.course[lang]}</h3>
+                    <div className="text-xs text-neutral-500">{tch.years}</div>
                   </div>
-                  <div className="mt-1 text-sm text-neutral-600 dark:text-neutral-400 break-words">{t.role}</div>
-                  <p className="mt-2 text-sm text-neutral-700 dark:text-neutral-300 break-words">{t.details}</p>
+                  <div className="mt-1 text-sm text-neutral-600 dark:text-neutral-400 break-words">
+                    {tch.role[lang]}
+                  </div>
+                  <p className="mt-2 text-sm text-neutral-700 dark:text-neutral-300 break-words">
+                    {tch.details[lang]}
+                  </p>
                 </li>
               ))}
             </ul>
           </section>
 
           <footer className="my-12 text-center text-xs text-neutral-500">
-            © {new Date().getFullYear()} Jules Collenne. All rights reserved.
+            © {new Date().getFullYear()} Jules Collenne. {t(lang, "footer_rights")}
           </footer>
         </main>
       </div>
+    </div>
     </div>
   );
 }

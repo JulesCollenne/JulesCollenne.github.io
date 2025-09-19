@@ -1,13 +1,16 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));  /* ← make dark: use the .dark class */
 
+
+/* Keep fonts & rendering only; remove global colors */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 550;
 
+  /* Don't set color/background here, let Tailwind + .dark control it */
+  /* color-scheme can stay neutral or be removed entirely */
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #111111;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,6 +18,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Let the app layout control positioning; no centering on body */
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+/* Links */
 a {
   font-weight: 650;
   color: #27b45b;
@@ -24,19 +35,7 @@ a:hover {
   color: #219e50;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 2rem;
-  line-height: 1.2;
-}
-
+/* Buttons: keep neutral base; colors come from Tailwind classes in components */
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -44,33 +43,10 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
+button:hover { border-color: #646cff; }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #1c7440;
-    background-color: #eeeeee;
-  }
-  a {
-  font-weight: 650;
-  color: #1e8747;   /* emerald green */
-  text-decoration: inherit;
-}
+/* Remove the whole prefers-color-scheme block that overrides backgrounds */
 
-a:hover {
-  color: #176a38;   /* darker green on hover */
-}
-  button {
-    background-color: #f9f9f9;
-  }
-}
