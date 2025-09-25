@@ -21,7 +21,7 @@ const SOCIALS = [
   { label: "Google Scholar", href: "https://scholar.google.com/citations?user=TQJRonQAAAAJ&hl=en" },
   { label: "ORCID", href: "https://orcid.org/0000-0002-7540-0610" },
   { label: "Stack Overflow", href: "https://stackoverflow.com/users/12384070/sashimid%C3%A9licieux" },
-  { label: "Email", href: "mailto:jules.collenne@gmail.com" },
+  { label: "Email", href: "mailto:julescollennepro@gmail.com" },
 ];
 
 const NEWS = [
@@ -376,10 +376,10 @@ export default function OnePageSite() {
   { name: t(lang, "refs_title_guessthemovie"), href: "https://www.guessthemovie.eu" },
   { name: t(lang, "refs_title_ebooks"), href: "https://julesphere354.gumroad.com/" },
   { name: t(lang, "refs_title_fiverr"), href: "https://www.fiverr.com/s/o8ZNge8" },
-  {
+  /*{
     name: t(lang, "refs_title_lessons"),
     href: "https://www.superprof.fr/diplome-doctorat-intelligence-artificielle-universite-aix-marseille-enseigne-programmation-python-java.html",
-  },
+  },*/
 ].map((ref) => (
   <li key={ref.href} className="min-w-0 basis-[calc(50%-0.375rem)] sm:flex-[0_1_auto]">
     {ref.href.startsWith("/") ? (

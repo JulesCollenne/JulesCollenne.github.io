@@ -1,5 +1,4 @@
 // src/components/Controls.tsx
-import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useLangThemeCtx } from "../ctx/LangThemeContext";
 import { saveLang } from "../i18n";

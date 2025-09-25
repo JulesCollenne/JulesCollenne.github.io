@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Lang } from "./i18n";
 
-const EMAIL = "jules.collenne@gmail.com";
+const EMAIL = "julescollennepro@gmail.com";
 
 type CopyState = "idle" | "copied" | "error";
 
