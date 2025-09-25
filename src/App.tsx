@@ -1,12 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import ConsultingCTA from "./ConsultingCTA";
-import { detectLang, saveLang, t } from "./i18n";
+import { detectLang, t } from "./i18n";
 import type { Lang } from "./i18n";
 import BackgroundNet from "./BackgroundNet";
 import type { Theme } from "./theme";
-import { getThemeFromDOM, getInitialTheme, applyTheme, toggleTheme } from "./theme";
-
+import { getThemeFromDOM } from "./theme";
+import { Link } from "react-router-dom";
+import "./App.css";
+import "./index.css";
+import { useLangThemeCtx } from "./ctx/LangThemeContext";
 
 // ---------------------------------------------
 // One-page personal website for Jules Collenne
@@ -146,6 +149,7 @@ const PROJECTS = [
   },
 ];
 
+
 const TEACHING = [
   {
     course: { en: "Intro to Programming (Python)", fr: "Introduction à la programmation (Python)" },
@@ -200,89 +204,12 @@ function initials(s: string) {
     .join("");
 }
 
-function Controls({
-  lang,
-  setLang,
-  theme,
-  setTheme,
-}: {
-  lang: Lang;
-  setLang: (l: Lang) => void;
-  theme: Theme;
-  setTheme: (t: Theme) => void;
-}) {
-  return (
-  <div
-    className="
-      fixed z-[9999] flex gap-1.5 sm:gap-2
-      bottom-3 right-3                     /* 📱 phones: bottom-right */
-      sm:bottom-auto sm:top-4 sm:right-4   /* 💻 ≥sm: top-right */
-      pr-[max(0px,env(safe-area-inset-right))]
-      pb-[max(0px,env(safe-area-inset-bottom))]
-    "
-  >
-    {/* Language pill */}
-    <button
-      aria-label="Toggle language"
-      onClick={() => {
-        const next = lang === "en" ? ("fr" as Lang) : ("en" as Lang);
-        setLang(next);
-        saveLang(next);
-      }}
-      className="
-        flex items-center gap-2 rounded-full border backdrop-blur shadow-sm
-        px-2.5 py-1 text-xs              /* 📱 compact on phones */
-        sm:px-3 sm:py-1.5 sm:text-sm     /* 💻 normal on desktop */
-        border-neutral-300 bg-white/90 text-neutral-900 hover:bg-white
-        dark:border-neutral-700 dark:bg-neutral-900/80 dark:text-neutral-100 dark:hover:bg-neutral-900
-      "
-    >
-      <span className="tabular-nums font-medium">{lang === "en" ? "EN" : "FR"}</span>
-      <span className="text-neutral-400">|</span>
-      <span>{lang === "en" ? "FR" : "EN"}</span>
-    </button>
-
-    {/* Theme pill */}
-    <button
-      aria-label="Toggle color theme"
-      aria-pressed={theme === "dark"}
-      onClick={() => {
-        const next = toggleTheme(); // flips <html>.dark + saves
-        setTheme(next);
-      }}
-      className="
-        flex items-center gap-2 rounded-full border backdrop-blur shadow-sm
-        px-2.5 py-1 text-xs
-        sm:px-3 sm:py-1.5 sm:text-sm
-        border-neutral-300 bg-white/90 text-neutral-900 hover:bg-white
-        dark:border-neutral-700 dark:bg-neutral-900/80 dark:text-neutral-100 dark:hover:bg-neutral-900
-      "
-    >
-      <span className="font-medium">{theme === "dark" ? "🌙 Dark" : "☀️ Light"}</span>
-    </button>
-  </div>
-);
-
-}
-
-
 export default function OnePageSite() {
-  const [lang, setLang] = useState<Lang>("en");
-  useEffect(() => setLang(detectLang()), []);
-
-  const [theme, setTheme] = useState<Theme>(() => getThemeFromDOM());
-  useEffect(() => {
-    // On very first load (if inline script wasn’t present), enforce initial
-    const initial = getInitialTheme();
-    applyTheme(initial);
-    setTheme(getThemeFromDOM());
-  }, []);
-  
-  useEffect(() => {
-    const obs = new MutationObserver(() => setTheme(getThemeFromDOM()));
-    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => obs.disconnect();
-  }, []);
+    const ctx = useLangThemeCtx();
+    const lang: Lang = ctx?.lang ?? detectLang();
+    //const setLang = ctx?.setLang ?? (() => {});
+    const theme: Theme = ctx?.theme ?? getThemeFromDOM();
+    //const setTheme = ctx?.setTheme ?? (() => {});
 
   const [newsCount, setNewsCount] = useState(5);
   const sortedNews = React.useMemo(
@@ -331,7 +258,6 @@ export default function OnePageSite() {
       dark={theme === "dark"}
     />
     <div className="relative z-10">
-      <Controls lang={lang} setLang={setLang} theme={theme} setTheme={setTheme} />
 
       {/* Layout wrapper */}
       <div className="flex w-full gap-8 px-4 py-8 sm:px-6 lg:px-8">
@@ -447,33 +373,43 @@ export default function OnePageSite() {
           <div className="mt-6 w-full">
             <ul className="flex flex-wrap gap-3">
               {[
-                { name: t(lang, "refs_title_guessthemovie"), href: "https://www.guessthemovie.eu" },
-                { name: t(lang, "refs_title_ebooks"), href: "https://julesphere354.gumroad.com/" },
-                { name: t(lang, "refs_title_fiverr"), href: "https://www.fiverr.com/s/o8ZNge8" },
-                {
-                  name: t(lang, "refs_title_lessons"),
-                  href: "https://www.superprof.fr/diplome-doctorat-intelligence-artificielle-universite-aix-marseille-enseigne-programmation-python-java.html",
-                },
-              ].map((ref) => (
-                <li key={ref.href} className="min-w-0 basis-[calc(50%-0.375rem)] sm:flex-[0_1_auto]">
-                  <a
-                    href={ref.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="
-                      block w-full text-center
-                      rounded-lg px-4 py-2 text-sm font-medium
-                      bg-neutral-100 text-neutral-700 hover:bg-neutral-200
-                      dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700
-                      transition-colors
-                      truncate
-                    "
-                    title={ref.name}
-                  >
-                    {ref.name}
-                  </a>
-                </li>
-              ))}
+  { name: t(lang, "refs_title_guessthemovie"), href: "https://www.guessthemovie.eu" },
+  { name: t(lang, "refs_title_ebooks"), href: "https://julesphere354.gumroad.com/" },
+  { name: t(lang, "refs_title_fiverr"), href: "https://www.fiverr.com/s/o8ZNge8" },
+  {
+    name: t(lang, "refs_title_lessons"),
+    href: "https://www.superprof.fr/diplome-doctorat-intelligence-artificielle-universite-aix-marseille-enseigne-programmation-python-java.html",
+  },
+].map((ref) => (
+  <li key={ref.href} className="min-w-0 basis-[calc(50%-0.375rem)] sm:flex-[0_1_auto]">
+    {ref.href.startsWith("/") ? (
+      <Link
+        to={ref.href}
+        className="block w-full text-center rounded-lg px-4 py-2 text-sm font-medium
+                   bg-neutral-100 text-neutral-700 hover:bg-neutral-200
+                   dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700
+                   transition-colors truncate"
+        title={ref.name}
+      >
+        {ref.name}
+      </Link>
+    ) : (
+      <a
+        href={ref.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block w-full text-center rounded-lg px-4 py-2 text-sm font-medium
+                   bg-neutral-100 text-neutral-700 hover:bg-neutral-200
+                   dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700
+                   transition-colors truncate"
+        title={ref.name}
+      >
+        {ref.name}
+      </a>
+    )}
+  </li>
+))}
+
             </ul>
           </div>
 
