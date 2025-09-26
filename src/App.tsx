@@ -9,9 +9,6 @@ import { getInitialTheme } from "./theme";
 import { Link } from "react-router-dom";
 import "./index.css";
 import { useLangThemeCtx } from "./hooks/useLangTheme";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import BlogIndex from "./blog/BlogIndex";
-import BlogPost from "./blog/BlogPost";
 
 // ---------------------------------------------
 // One-page personal website for Jules Collenne

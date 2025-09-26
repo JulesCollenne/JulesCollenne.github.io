@@ -1,56 +1,42 @@
-import { useEffect, useMemo, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
+import { LangThemeProvider } from "../ctx/LangThemeContext"; // ✅ same relative path
 import BackgroundNet from "../BackgroundNet";
 import Controls from "../components/Controls";
 
+export default function AppShell() {
+  return (
+    <LangThemeProvider>
+      <Chrome />
+    </LangThemeProvider>
+  );
+}
+
 function Chrome() {
   const { pathname } = useLocation();
-
   const isHome = pathname === "/";
   const isBlogIndex = pathname === "/blog";
   const isBlog = pathname.startsWith("/blog");
   const isBlogPost = isBlog && !isBlogIndex;
 
-  // Show BG on home + all blog pages (index + posts)
   const showBg = isHome || isBlog;
-
-  // Tune intensity per page
-  const bg = useMemo(() => {
-    if (isHome) {
-      return { density: 0.00005, connectDist: 140, dotSize: 1.6, maxSpeed: 0.035 };
-    }
-    if (isBlogIndex) {
-      return { density: 0.000028, connectDist: 120, dotSize: 1.35, maxSpeed: 0.028 };
-    }
-    if (isBlogPost) {
-      // slightly softer than index
-      return { density: 0.000028, connectDist: 120, dotSize: 1.35, maxSpeed: 0.028 };
-    }
-    return null;
-  }, [isHome, isBlogIndex, isBlogPost]);
-
-  const [motionOK, setMotionOK] = useState(true);
-  useEffect(() => {
-    const m = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setMotionOK(!m.matches);
-    update();
-    m.addEventListener("change", update);
-    return () => m.removeEventListener("change", update);
-  }, []);
+  const bg = isHome
+    ? { density: 0.00005, connectDist: 140, dotSize: 1.6, maxSpeed: 0.035 }
+    : isBlogIndex
+    ? { density: 0.000028, connectDist: 120, dotSize: 1.35, maxSpeed: 0.028 }
+    : { density: 0.000028, connectDist: 120, dotSize: 1.35, maxSpeed: 0.028 };
 
   return (
     <div className="relative min-h-screen">
-      {motionOK && showBg && bg && (
+      {showBg && (
         <div className="fixed inset-0 -z-10 pointer-events-none">
           <BackgroundNet {...bg} />
           {(isBlogIndex || isBlogPost) && (
-            // a gentle veil for readability over posts too
             <div className="absolute inset-0 bg-white/10 dark:bg-black/20" />
           )}
         </div>
       )}
 
-      {/* Floating controls */}
+      {/* Floating controls LIVE UNDER THE PROVIDER */}
       <div className="fixed top-3 right-3 z-30 pointer-events-auto">
         <Controls />
       </div>
@@ -61,6 +47,4 @@ function Chrome() {
     </div>
   );
 }
-
-export default Chrome;
 
