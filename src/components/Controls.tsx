@@ -1,6 +1,6 @@
 // src/components/Controls.tsx
 import { useNavigate, useLocation } from "react-router-dom";
-import { useLangThemeCtx } from "../ctx/LangThemeContext";
+import { useLangThemeCtx } from "../hooks/useLangTheme";
 import { saveLang } from "../i18n";
 import { toggleTheme } from "../theme";
 

@@ -5,11 +5,13 @@ import { detectLang, t } from "./i18n";
 import type { Lang } from "./i18n";
 import BackgroundNet from "./BackgroundNet";
 import type { Theme } from "./theme";
-import { getThemeFromDOM } from "./theme";
+import { getInitialTheme } from "./theme";
 import { Link } from "react-router-dom";
-import "./App.css";
 import "./index.css";
-import { useLangThemeCtx } from "./ctx/LangThemeContext";
+import { useLangThemeCtx } from "./hooks/useLangTheme";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import BlogIndex from "./blog/BlogIndex";
+import BlogPost from "./blog/BlogPost";
 
 // ---------------------------------------------
 // One-page personal website for Jules Collenne
@@ -208,7 +210,7 @@ export default function OnePageSite() {
     const ctx = useLangThemeCtx();
     const lang: Lang = ctx?.lang ?? detectLang();
     //const setLang = ctx?.setLang ?? (() => {});
-    const theme: Theme = ctx?.theme ?? getThemeFromDOM();
+    const theme: Theme = ctx?.theme ?? getInitialTheme();
     //const setTheme = ctx?.setTheme ?? (() => {});
 
   const [newsCount, setNewsCount] = useState(5);

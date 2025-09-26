@@ -1,8 +1,21 @@
-<!-- public/index.html or index.html at project root (Vite default) -->
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="color-scheme" content="dark" />
+<script>
+  (function () {
+    try {
+      var saved = localStorage.getItem("theme"); // "dark" | "light" | null
+      if (saved === "light") document.documentElement.classList.remove("dark");
+      else document.documentElement.classList.add("dark"); // default = dark
+    } catch (_) {
+      document.documentElement.classList.add("dark");
+    }
+  })();
+</script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Jules Collenne</title>
   </head>

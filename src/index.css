@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@custom-variant dark (&:where(.dark, .dark *));  /* ← make dark: use the .dark class */
+@custom-variant dark (&:where(.dark, .dark *));
 
 
 /* Keep fonts & rendering only; remove global colors */
@@ -10,7 +10,7 @@
 
   /* Don't set color/background here, let Tailwind + .dark control it */
   /* color-scheme can stay neutral or be removed entirely */
-  color-scheme: light dark;
+  color-scheme: dark;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

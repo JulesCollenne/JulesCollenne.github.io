@@ -1,34 +1,15 @@
 // src/hooks/useLangTheme.ts
-import { useEffect, useState } from "react";
-import { detectLang, saveLang, type Lang } from "../i18n";
-import { getThemeFromDOM, getInitialTheme, applyTheme, type Theme } from "../theme";
+"use client";
+import { useContext } from "react";
+// ✅ import the context from *ctx*, not from this file
+import { LangThemeContext } from "../ctx/LangThemeContext"; // or "@/ctx/LangThemeContext" if alias is set
 
-export function useLangTheme() {
-  const [lang, setLang] = useState<Lang>(() => detectLang());
-  useEffect(() => { saveLang(lang); }, [lang]);
-
-  // also react to Controls’ custom event
-  useEffect(() => {
-    const onLang = (e: Event) => {
-      const next = (e as CustomEvent).detail as Lang;
-      setLang(next);
-    };
-    window.addEventListener("lang:changed", onLang);
-    return () => window.removeEventListener("lang:changed", onLang);
-  }, []);
-
-  const [theme, setTheme] = useState<Theme>(() => getThemeFromDOM());
-  useEffect(() => {
-    const initial = getInitialTheme();
-    applyTheme(initial);
-    setTheme(getThemeFromDOM());
-  }, []);
-  useEffect(() => {
-    const obs = new MutationObserver(() => setTheme(getThemeFromDOM()));
-    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => obs.disconnect();
-  }, []);
-
-  return { lang, setLang, theme, setTheme };
+export function useLangThemeCtx() {
+  const ctx = useContext(LangThemeContext);
+  if (!ctx) throw new Error("useLangThemeCtx must be used within <LangThemeProvider>");
+  return ctx;
 }
 
+// convenience alias
+export const useLangTheme = useLangThemeCtx;
+export default useLangTheme;

@@ -6,7 +6,7 @@ export default function BackgroundNet({
   maxSpeed = 0.03,
   connectDist = 140,
   dotSize = 1.6,
-  dark = false,              // 👈 from props
+  dark = false,
 }: {
   density?: number;
   maxSpeed?: number;

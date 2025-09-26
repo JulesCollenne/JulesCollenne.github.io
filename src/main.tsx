@@ -1,25 +1,28 @@
 // src/main.tsx
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import App from "./App";
 import AppShell from "./layouts/AppShell";
-import BlogIndex from "./pages/BlogIndex";
-import PostPage from "./pages/PostPage";
+import BlogIndex from "./blog/BlogIndex";
+import BlogPost from "./blog/BlogPost";
+import "./index.css"; // if you use it
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-  <Routes>
-    <Route element={<AppShell />}>
-      <Route path="/" element={<App />} />
-      <Route path="/blog" element={<BlogIndex />} />
-      <Route path="/blog/:slug" element={<PostPage />} />
-    </Route>
-  </Routes>
-</BrowserRouter>
+      <Suspense fallback={<div className="p-6">Loading…</div>}>
+        <Routes>
+          <Route element={<AppShell />}>
+            <Route path="/" element={<App />} />
+            <Route path="/blog" element={<BlogIndex />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
+          </Route>
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
   </React.StrictMode>
 );
-

@@ -1,10 +1,10 @@
 // tailwind.config.ts
-import type { Config } from 'tailwindcss'
+import typography from "@tailwindcss/typography";
 
 export default {
-  darkMode: 'class', // <<< KEY: switch to class strategy
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  darkMode: "class",
+  content: ["./index.html", "./src/**/*.{ts,tsx,md,mdx}"],
   theme: { extend: {} },
-  plugins: [],
-} satisfies Config
+  plugins: [typography()],
+};
 

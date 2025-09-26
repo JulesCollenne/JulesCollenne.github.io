@@ -7,3 +7,25 @@ html, body, #root { height: 100%; }
 body { margin: 0; }
 #root { margin: 0; padding: 0; max-width: none; }
 
+/* Style headings & spacing inside post content via a wrapper class */
+@layer base {
+  .article-content h1 { @apply mt-10 mb-4 text-3xl font-semibold; }
+  .article-content h2 { @apply mt-8  mb-3 text-2xl font-semibold; }
+  .article-content h3 { @apply mt-6  mb-2 text-xl  font-semibold; }
+
+  .article-content p   { @apply my-4 leading-7; }
+  .article-content ul  { @apply my-4 list-disc pl-6; }
+  .article-content ol  { @apply my-4 list-decimal pl-6; }
+  .article-content li  { @apply my-1; }
+  .article-content img { @apply my-4 rounded-xl max-w-full; }
+  .article-content pre { @apply my-4 p-4 rounded-xl overflow-auto; }
+  .article-content blockquote { @apply my-4 border-l-4 border-white/20 pl-4 italic; }
+  .article-content hr  { @apply my-8 border-white/10; }
+}
+
+@layer base {
+  .article-content h1 { font-size: 1.875rem !important; line-height: 2.25rem !important; font-weight: 600 !important; margin-top: 2.5rem; margin-bottom: 1rem; }
+  .article-content h2 { font-size: 1.5rem  !important; line-height: 2rem    !important; font-weight: 600 !important; margin-top: 2rem;   margin-bottom: 0.75rem; }
+  .article-content h3 { font-size: 1.25rem !important; line-height: 1.75rem !important; font-weight: 600 !important; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+}
+
