@@ -1,0 +1,66 @@
+---
+slug: guessthemovie1
+title: GuessTheMovie - Devlog 1
+date: 2025-09-30
+summary: "Presenting my WebApp project, it's a simple game."
+tags: [GuessTheMovie, ChatGPT, WebApp]
+cover: /blog/hello-world/cover.jpg
+---
+
+<figure>
+  <img src="/blog/guessthemovie/guessthemovie1.png" alt="Cover" loading="lazy" />
+</figure>
+
+
+<a
+    href="https://guessthemovie.eu"
+    target="_blank" rel="noreferrer"
+    className="inline-flex items-center gap-1 rounded-lg border px-1 py-0 bg-black/40 border-white/15 backdrop-blur hover:bg-white/10"
+  >
+    🎥️ Play Now
+  </a>
+
+# What's GuessTheMovie ?
+
+It's a game where the user guess movies based on a list of emojis representing the movie!
+
+## Background story
+
+I've always enjoyed making simple tools and games in my free time, but never felt like publishing them because I always feel like it was not good enough.
+
+And the truth is that making things alone at home without ever publishing it, without anyone giving feedback is the best way to lose motivation and give up. And that's exactly what I'm trying to change these days. I know it's not perfect, but instead of directly burying my projects out of shame, I want them to live, be confronted to reality, so that I can learn from it more.
+
+So, when my contract as a Research Assistant in Aix-Marseille University ended, I wanted to make a simple game. Not only making it: I wanted to publish it and go through ALL the steps, from coding the first line to deploying.
+
+I know it would not be perfect, I know it could even be a very bad game... but I wanted once for all people to see it, for the best and for the worst.
+
+## How did I do it ?
+
+I'm not gonna lie, I used ChatGPT to write some lines. I knew a little bit of webdev but most of my projects where not embedded as web. If you check my Github projects, you'll mostly see softwares in C, Java, Python that never where embedded in web, it was just local.
+
+So I've happily started using ChatGPT until I realized that even for a "small" project like GuessTheMovie, the more the project grew, the less ChatGPT could help me: it forgot the context, how the project where structured... and overall it became a bug generator that couldn't be used anymore.
+
+The good thing about LLMs in this story is that it led me to have a MVP fairly quickly, which is good, and this viable product gave me the motivation to actually learn about how WebApp are truly working, so I've spend quite some time reading about how to organize everything, how Node.js and Next.js work, how to use routes, how to link everything together.
+
+## Do I create the emojis for the movies by hand ?
+
+No, and it's completely automated! I have Github Actions running regularly to add movies, it uses LLMs to generate the list of emojis for each movie, generating a hint for each one as well as rating the difficulty (unpopular movies are more difficult to guess!).
+
+I've also implemented a less frequent pipeline that look at the worst rated movies by the users, and try to fix the problem if there's any. It can be a movie's title that's not parsed correctly, an overly long title with useless details for the users (in the BD, there are stuff like "realisator cut"). And I don't even have to care about it, I just send the information about the movie, its emojis and its rating, and ask ChatGPT to accordingly update the emojis, title etc. to make it better.
+
+I'll have to get some ratings before making sure this part is completely functional.
+
+## Next ?
+
+I'm still working on it, so stay tuned !
+
+<a
+    href="https://guessthemovie.eu"
+    target="_blank" rel="noreferrer"
+    className="inline-flex items-center gap-1 rounded-lg border px-1 py-0 bg-black/40 border-white/15 backdrop-blur hover:bg-white/10"
+  >
+    🎥️ Play Now
+  </a>
+
+
+
