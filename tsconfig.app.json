@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "composite": true,
-    "noEmit": false,
+    "noEmit": true,
     "outDir": "./dist",
     "module": "ESNext",
     "target": "ESNext",
