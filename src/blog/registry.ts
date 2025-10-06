@@ -15,7 +15,7 @@ export type PostModule = {
   frontmatter: PostMeta;
 };
 
-const modules = import.meta.glob<PostModule>("./*.md{x,}", { eager: true });
+const modules = import.meta.glob("./*.md{x,}", { eager: true }) as Record<string, PostModule>;
 
 export type PostItem = {
   slug: string;
