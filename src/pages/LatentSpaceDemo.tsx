@@ -1,11 +1,21 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import * as React from "react";
+import { useEffect, useState, useRef } from "react";
 import Plot from "react-plotly.js";
 
+interface LesionPoint {
+  id: string;
+  x: number;
+  y: number;
+  score: number;
+  patient: string;
+  img: string;
+}
+
 export default function LatentSpaceDemo() {
-  const [points, setPoints] = useState<any[]>([]);
-  const [hovered, setHovered] = useState<any | null>(null);
-  const [selected, setSelected] = useState<any | null>(null);
+  const [points, setPoints] = useState<LesionPoint[]>([]);
+  const [hovered, setHovered] = useState<LesionPoint | null>(null);
+  const [selected, setSelected] = useState<LesionPoint | null>(null);
   const [patient, setPatient] = useState<string>("");
   const plotRef = useRef<any>(null);
 
@@ -13,10 +23,12 @@ export default function LatentSpaceDemo() {
   useEffect(() => {
     fetch("/demos/latent_space/points.json")
       .then((r) => r.json())
-      .then((data) => {
+      .then((data: LesionPoint[]) => {
         setPoints(data);
         if (data.length) {
-          const unique = Array.from(new Set(data.map((p: any) => p.patient || "unknown")));
+          const unique = Array.from(
+            new Set(data.map((p: LesionPoint) => p.patient || "unknown"))
+          ) as string[];
           setPatient(unique[0]);
         }
       })
@@ -27,7 +39,9 @@ export default function LatentSpaceDemo() {
   if (!patient) return null;
 
   // Extract patient list
-  const patients = Array.from(new Set(points.map((p) => p.patient || "unknown")));
+  const patients: string[] = Array.from(
+    new Set(points.map((p: LesionPoint) => p.patient || "unknown"))
+  );
   const filtered = points.filter((p) => p.patient === patient);
 
   // Compute extremes
@@ -41,8 +55,8 @@ export default function LatentSpaceDemo() {
   const y = filtered.map((p) => p.y);
   const color = filtered.map((p) => p.score);
   const ids = filtered.map((p) => p.id);
-  const imgs = filtered.map((p) => p.img);
 
+  // Color scale
   const colorscale = [
     [0, "rgb(0,200,50)"],
     [0.5, "rgb(255,230,0)"],
@@ -53,13 +67,15 @@ export default function LatentSpaceDemo() {
     <div className="relative space-y-4 bg-white rounded-2xl border border-neutral-200 dark:border-neutral-800 p-4 shadow-sm">
       {/* Patient selector */}
       <div className="flex items-center justify-between">
-        <label className="text-sm text-neutral-700 dark:text-neutral-300">Select patient:</label>
+        <label className="text-sm text-neutral-700 dark:text-neutral-300">
+          Select patient:
+        </label>
         <select
           value={patient}
           onChange={(e) => setPatient(e.target.value)}
           className="text-sm border border-neutral-300 dark:border-neutral-700 rounded-lg p-1 bg-transparent"
         >
-          {patients.map((p) => (
+          {patients.map((p: string) => (
             <option key={p} value={p}>
               {p}
             </option>
@@ -67,7 +83,7 @@ export default function LatentSpaceDemo() {
         </select>
       </div>
 
-      {/* Plotly chart */}
+      {/* Plot */}
       <Plot
         ref={plotRef}
         data={[
@@ -75,7 +91,6 @@ export default function LatentSpaceDemo() {
             x,
             y,
             text: ids,
-            customdata: imgs,
             mode: "markers",
             marker: {
               color,
@@ -94,22 +109,18 @@ export default function LatentSpaceDemo() {
                 {
                   x: [mostNormal.x],
                   y: [mostNormal.y],
-                  text: ["Most normal"],
-                  customdata: [mostNormal.img],
+                  text: [mostNormal.id],
                   mode: "markers+text",
                   textposition: "top center",
-                  marker: { size: 14, color: "blue", symbol: "star" },
-                  hovertemplate: "Most normal<extra></extra>",
+                  marker: { size: 12, color: "blue", symbol: "star" },
                 },
                 {
                   x: [mostAbnormal.x],
                   y: [mostAbnormal.y],
-                  text: ["Most abnormal"],
-                  customdata: [mostAbnormal.img],
+                  text: [mostAbnormal.id],
                   mode: "markers+text",
                   textposition: "top center",
-                  marker: { size: 14, color: "red", symbol: "star" },
-                  hovertemplate: "Most abnormal<extra></extra>",
+                  marker: { size: 12, color: "red", symbol: "star" },
                 },
               ]
             : []),
@@ -123,17 +134,18 @@ export default function LatentSpaceDemo() {
           yaxis: { visible: false },
         }}
         style={{ width: "100%", height: "500px" }}
-        onHover={(e) => {
-          const point = e.points[0];
-          const id = point.text;
-          const img = point.customdata;
-          const found = filtered.find((p) => p.id === id) || { id, img, score: 0 };
+        onHover={(e: any) => {
+          const id = e.points?.[0]?.text;
+          const found =
+            filtered.find((p) => p.id === id) ||
+            filtered.find((p) => p.id === mostNormal?.id || p.id === mostAbnormal?.id) ||
+            null;
           setHovered(found);
         }}
         onUnhover={() => setHovered(null)}
-        onClick={(e) => {
-          const id = e.points[0].text;
-          const found = filtered.find((p) => p.id === id);
+        onClick={(e: any) => {
+          const id = e.points?.[0]?.text;
+          const found = filtered.find((p) => p.id === id) || null;
           setSelected(found);
         }}
         config={{ displayModeBar: false }}
@@ -142,7 +154,7 @@ export default function LatentSpaceDemo() {
       {/* Hover thumbnail */}
       {hovered && (
         <div
-          className="absolute z-50 bg-white border border-neutral-300 rounded-lg shadow-md p-2"
+          className="absolute bg-white border border-neutral-300 rounded-lg shadow-md p-2"
           style={{
             top: "10px",
             right: "10px",
@@ -156,8 +168,8 @@ export default function LatentSpaceDemo() {
             className="w-full rounded-md object-cover"
           />
           <p className="text-[11px] mt-1 text-neutral-600">
-            {hovered.id || "Lesion"} <br />
-            {hovered.score ? `Score: ${hovered.score.toFixed(3)}` : ""}
+            {hovered.id} <br />
+            Score: {hovered.score.toFixed(3)}
           </p>
         </div>
       )}

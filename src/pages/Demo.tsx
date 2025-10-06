@@ -1,9 +1,9 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import { useLangThemeCtx } from "../hooks/useLangTheme";
 import { Link } from "react-router-dom";
 import BackgroundNet from "../BackgroundNet";
-import LatentSpaceDemo from "./LatentSpaceDemo";
+const LatentSpaceDemo = React.lazy(() => import("./LatentSpaceDemo"));
 
 export default function DemoPage() {
   const { lang, theme } = useLangThemeCtx();
@@ -33,7 +33,11 @@ export default function DemoPage() {
         en: "2D projection of lesion embeddings showing anomaly detection results.",
         fr: "Projection 2D des embeddings de lésions illustrant la détection d’anomalies.",
       },
-      component: <LatentSpaceDemo />,
+      component: (
+        <Suspense fallback={<p className="text-center mt-4">Loading demo…</p>}>
+          <LatentSpaceDemo />
+        </Suspense>
+      ),
     },
   ];
 

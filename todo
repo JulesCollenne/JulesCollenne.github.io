@@ -1,0 +1,37 @@
+Ajouter une page de démos.
+avant teaching, faire une section "collaborators"
+section skills & stack
+
+
+
+add lesions images for demo
+
+Pre-compute & export your data
+
+On your workstation:
+import json
+import numpy as np
+
+# Suppose you already have embeddings (512D) and TSNE or UMAP results
+latent_2d = tsne.fit_transform(embeddings)  # shape (N,2)
+meta = [
+    {
+        "id": f"lesion_{i}",
+        "x": float(latent_2d[i, 0]),
+        "y": float(latent_2d[i, 1]),
+        "score": float(anomaly_scores[i]),
+        "img": f"/demos/lesions/lesion_{i}.jpg",
+        "label": "unknown"  # or "benign"/"melanoma" if available
+    }
+    for i in range(len(latent_2d))
+]
+
+json.dump(meta, open("public/demos/latent_space/points.json", "w"), indent=2)
+
+
+Then put everything in your site’s public/demos/latent_space/ folder:
+points.json
+lesion_0.jpg
+lesion_1.jpg
+...
+

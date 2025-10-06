@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 
 // ---------------------------------------------
 // Constants (easy to update)
