@@ -7,6 +7,7 @@ import App from "./App";
 import AppShell from "./layouts/AppShell";
 import BlogIndex from "./blog/BlogIndex";
 import BlogPost from "./blog/BlogPost";
+import DemoPage from "./pages/Demo";
 import "./index.css"; // if you use it
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
@@ -20,6 +21,7 @@ root.render(
             <Route path="/" element={<App />} />
             <Route path="/blog" element={<BlogIndex />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/demo" element={<DemoPage />} />
           </Route>
         </Routes>
       </Suspense>

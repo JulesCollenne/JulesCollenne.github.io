@@ -1,0 +1,43 @@
+[
+  {
+    "id": "lesion_001",
+    "x": -3.21,
+    "y": 1.15,
+    "score": 0.12,
+    "patient": "P001",
+    "img": "/demos/latent_space/images/lesion_001.png"
+  },
+  {
+    "id": "lesion_002",
+    "x": -2.98,
+    "y": 1.08,
+    "score": 0.18,
+    "patient": "P001",
+    "img": "/demos/latent_space/images/lesion_002.png"
+  },
+  {
+    "id": "lesion_003",
+    "x": 1.42,
+    "y": -0.35,
+    "score": 0.86,
+    "patient": "P001",
+    "img": "/demos/latent_space/images/lesion_003.png"
+  },
+  {
+    "id": "lesion_004",
+    "x": -1.23,
+    "y": 0.75,
+    "score": 0.08,
+    "patient": "P002",
+    "img": "/demos/latent_space/images/lesion_004.png"
+  },
+  {
+    "id": "lesion_005",
+    "x": 0.54,
+    "y": -2.11,
+    "score": 0.94,
+    "patient": "P002",
+    "img": "/demos/latent_space/images/lesion_005.png"
+  }
+]
+

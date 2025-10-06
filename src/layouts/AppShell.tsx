@@ -1,7 +1,8 @@
 import { Outlet, useLocation } from "react-router-dom";
-import { LangThemeProvider } from "../ctx/LangThemeContext"; // ✅ same relative path
+import { LangThemeProvider } from "../ctx/LangThemeContext";
 import BackgroundNet from "../BackgroundNet";
 import Controls from "../components/Controls";
+import ScrollTop from "../components/ScrollTop";
 
 export default function AppShell() {
   return (
@@ -39,6 +40,7 @@ function Chrome() {
       {/* Floating controls LIVE UNDER THE PROVIDER */}
       <div className="fixed top-3 right-3 z-30 pointer-events-auto">
         <Controls />
+        <ScrollTop />
       </div>
 
       <main className="relative z-10">
