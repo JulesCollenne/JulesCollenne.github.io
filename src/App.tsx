@@ -323,7 +323,7 @@ export default function OnePageSite() {
   return (
     <div className="min-h-screen antialiased overflow-x-hidden
                 bg-white text-neutral-900
-                dark:bg-neutral-950 dark:text-neutral-100">
+                dark:bg-neutral-950">
     <BackgroundNet
       density={0.00005}   // tweak: 0.00003–0.00008
       connectDist={140}   // tweak: 110–160
@@ -480,7 +480,7 @@ export default function OnePageSite() {
   ))}
 </div>
            
-           
+        
             <br />
            
             
@@ -608,33 +608,25 @@ export default function OnePageSite() {
   </div>
 
   <ul className="mt-4 space-y-6">
-    {PUBLICATIONS.slice(0, pubCount).map((p, i) => (
-      <li
-        key={i}
-        className="rounded-2xl border border-neutral-200 p-4 dark:border-neutral-800"
-      >
-        <div className="text-base font-medium break-words">{p.title}</div>
-        <div className="mt-1 text-sm text-neutral-600 dark:text-neutral-400 break-words">
-          {p.authors} · {p.venue} · {p.year}
+  {PUBLICATIONS.slice(0, pubCount).map((p, i) => (
+    <li key={i} className="card">
+      <div className="card-title break-words">{p.title}</div>
+      <div className="card-meta break-words">
+        {p.authors} · {p.venue} · {p.year}
+      </div>
+      {p.links?.length && (
+        <div className="mt-2 flex flex-wrap gap-3 text-sm">
+          {p.links.map((l) => (
+            <a key={l.label} href={l.href} className="card-link" target="_blank" rel="noreferrer noopener">
+              {l.label}
+            </a>
+          ))}
         </div>
-        {p.links?.length ? (
-          <div className="mt-2 flex flex-wrap gap-3 text-sm">
-            {p.links.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                className="rounded-md underline-offset-4 hover:underline"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                {l.label}
-              </a>
-            ))}
-          </div>
-        ) : null}
-      </li>
-    ))}
-  </ul>
+      )}
+    </li>
+  ))}
+</ul>
+
 
   {/* “See more” / “See less” like News & Teaching */}
   <div className="mt-3 flex gap-4 text-sm">

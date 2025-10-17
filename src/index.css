@@ -8,8 +8,6 @@
   line-height: 1.5;
   font-weight: 550;
 
-  /* Don't set color/background here, let Tailwind + .dark control it */
-  /* color-scheme can stay neutral or be removed entirely */
   color-scheme: dark;
 
   font-synthesis: none;
@@ -48,5 +46,36 @@ button {
 }
 button:hover { border-color: #646cff; }
 
-/* Remove the whole prefers-color-scheme block that overrides backgrounds */
+
+@layer base {
+  h1, h2, h3 {
+    @apply text-neutral-800 dark:text-neutral-100;
+  }
+
+  p {
+    @apply text-neutral-700 dark:text-neutral-300 leading-relaxed;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-neutral-200 p-4 bg-white
+           dark:border-neutral-800 dark:bg-neutral-900 transition-colors;
+  }
+
+  .card-title {
+    @apply text-base font-medium text-neutral-800 dark:text-neutral-100;
+  }
+
+  .card-meta {
+    @apply mt-1 text-sm text-neutral-600 dark:text-neutral-400;
+  }
+
+  .card-link {
+    @apply rounded-md text-emerald-600 dark:text-emerald-400 underline-offset-4 hover:underline;
+  }
+}
+
+
+
 
