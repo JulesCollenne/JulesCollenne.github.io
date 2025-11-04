@@ -1,0 +1,166 @@
+---
+slug: sjmae2
+title: Why I made SJ-MAE - Part 2 - How Self-Supervised Models Learn From Images
+date: 2025-11-05
+summary: "A brief overview of recent advances in Self-Supervised Vision Foundation Models and why I tackled this problem."
+tags: [self-supervised, research, foundation models, computer vision]
+cover: /blog/sjmae/arch.pdf
+---
+
+# Why I made SJ-MAE - Part 2 - How Self-Supervised Models Learn From Images
+
+<a
+  href="https://julescollenne.github.io/blog/sjmae1"
+  target="_blank" rel="noreferrer"
+  className="inline-flex items-center px-3 py-0.5 text-xs rounded-full bg-white/10 text-white/80 backdrop-blur-sm hover:bg-white/20 hover:text-white transition"
+>
+  Read Part 1 →
+</a>
+
+<figure>
+  <img src="/blog/sjmae/arch.png" alt="Cover" loading="lazy" />
+</figure>
+
+Architecture of our model, called SJ-MAE.
+
+# Training in a self-supervised manner for computer vision
+
+You might be thinking, how do these models learn representations without labels ?
+
+There are actually plenty of ways. And to this day, we're still not so sure which ones are really *better* than others. We have some clues, and some approaches do converge faster, but when comparing methods, some might take approximately the same amount of computation, some can be better than others in some specific topics, some takes years to train... so let's dive into it!
+
+<div className="border-l-4 border-white/20 bg-white/5 rounded-md p-3 text-sm text-white/80 italic backdrop-blur-sm">
+  🧠 <b>TL;DR</b> - Self-supervised models learn directly from data without human labels by defining clever objectives:
+  <ul className="list-disc list-inside mt-2 space-y-1">
+    <li><i>Contrastive</i>: compares embeddings of different image views to learn similarity and invariance</li>
+    <li><i>Reconstruction</i>: predicts missing or masked parts of an image (e.g., MAE, I-JEPA)</li>
+    <li><i>Pretext tasks</i>: solves handcrafted challenges such as jigsaw, rotation, or colorization</li>
+  </ul>
+  Each approach captures a different aspect of visual understanding. Combining them can yield stronger, more general representations: the key idea behind <b>SJ-MAE</b>.
+</div>
+
+
+## Contrastive and Similarity-Based Losses
+
+One of the most popular approaches consists of comparing images with each other.  
+Of course, since we don't have labels for the images, we must define ourselves what “similar” images and “different” images are.  
+
+A common strategy is to assume that, within a given batch, all other images are *negatives* (i.e., not from the same class), while two augmented versions of the **same** image are *positives*.  
+To create these positive pairs, the same image is randomly augmented using simple transformations such as changes in contrast, brightness, hue, cropping, rotation, or color jittering.  
+
+The model is then trained to make the two augmented versions of the same image *similar*. That is, to represent them close together in the embedding space while pushing them away from all other images in the batch.  
+This way, the network learns to build representations that are invariant to visual transformations and yet discriminative across different samples.
+
+> We call **embedding** a representation of an image in a smaller space, obtained by the succession of layers from the neural net. Concretely, it's just a list of "coordinates" ([0, 1, 2, 32, 45, etc.]) representing where the image is in a given space. The neural networks map images in the space in a way that minimize the loss.
+
+The loss function is often **InfoNCE**, which is a similarity-based objective:
+
+![InfoNCE Loss](/blog/sjmae/infonce.png)
+
+**Explanation.**  
+- `z_i`: embedding of the **anchor** image (one view/augmentation).  
+- `z_{i^+}`: embedding of the **positive** (another view of the same image).  
+- The denominator sums over `K` candidates (typically the batch), which act as **negatives** for `i`.  
+- `sim(·,·)`: **cosine similarity** (dot product of L2-normalized vectors).  
+- `τ` (tau): **temperature** that sharpens/softens the distribution.
+
+> Intuition: make the anchor close to its positive in embedding space, and far from other samples in the batch.
+
+
+This contrastive principle is at the heart of many popular self-supervised models:
+- **SimCLR** uses a simple contrastive setup where positives are augmented pairs and all other images in the batch are negatives, optimized with an *InfoNCE* loss.  
+- **MoCo** (Momentum Contrast) improves on this by maintaining a dynamic memory bank of negative samples using a momentum encoder, allowing much larger and more stable contrastive sets.  
+- **BYOL** (Bootstrap Your Own Latent) removes the notion of negatives entirely, relying on two networks (an online and a target encoder) and a stop-gradient trick to prevent representational collapse.  
+- **SimSiam** goes even simpler, having no negatives, no momentum encoder and uses a predictor head and gradient stop on one branch to achieve stable self-distillation.  
+- **SwAV** takes a slightly different route by using online clustering: each image is assigned to a prototype, and the model learns to predict consistent cluster assignments across augmentations.
+
+---
+
+Despite their differences, all these methods share the same underlying idea:  
+> Learn by comparing bring together what’s semantically similar and separate what’s not.
+
+## Reconstruction and Predictive Losses
+
+Another popular approach is reconstructing an image that has been deteriorated, partially hidden, or to predict something about the image.
+
+The most important model is probably Masked AutoEncoders (MAE), that simply hide patches of the original images to a Vision Transformer (ViT), and is trained to reconstruct the missing parts, with an encoder-decoder architecture. It works on pixel-level, and has led to other similar models as well, such as iBOT and SimMIM, with variations. The loss is simply the Mean Squared Error between reconstructed pixels, thus pushing the model to reconstruct the image correctly. The idea is that the useful embeddings will be located in the *bottleneck* (i.e. after the encoder).
+
+Here's a simple list explaining the difference between some of the main architectures:
+
+- **MAE (Masked Autoencoder, He et al. 2021)**  
+  The original masked image modeling approach. Randomly hides 75% of image patches and trains a Vision Transformer (ViT) encoder-decoder to reconstruct the missing pixels.  
+  → Works directly at the **pixel level**, focusing on low-level details.
+
+- **SimMIM (Xie et al. 2022)**  
+  Similar idea to MAE but with a **lighter decoder** and an **absolute patch reconstruction** objective.  
+  → Optimized for computational efficiency.
+
+- **BEiT (Bao et al. 2022)**  
+  Instead of predicting raw pixels, BEiT predicts **visual tokens** produced by a pretrained tokenizer (like a discrete VAE).  
+  → Shifts the objective from pixel reconstruction to **semantic token prediction**, improving high-level understanding.
+
+- **MaskFeat (Wei et al. 2022)**  
+  Predicts **handcrafted visual features** (e.g., HOG descriptors) for masked patches instead of pixels.  
+  → Encourages the model to learn perceptually meaningful features rather than low-level color patterns.
+
+- **iBOT (Zhou et al. 2022)**  
+  Combines **masked image modeling** with **self-distillation**. Uses teacher–student networks to predict the teacher’s representation of masked patches.  
+  → Bridges reconstruction and contrastive approaches by learning at the **feature level**.
+
+- **I-JEPA (Assran et al. 2023, by Meta AI)**  
+  A step further: predicts **latent representations** of *contextual regions* instead of pixels. The model learns to infer what’s inside a masked area *conceptually* rather than visually.  
+  → Focuses on **high-level prediction** rather than low-level reconstruction. Researchers tried to make it closer to how humans perceive context.
+
+---
+
+These methods all rely on the same core intuition:  
+> “Hide part of the input, and force the model to imagine what’s missing.”
+
+However, they differ in *what* they predict: pixels, tokens, or features... which changes the kind of understanding the model develops.  
+Pixel-level losses favor local detail, while feature or representation-level losses promote richer, more semantic understanding.
+
+In the next part, we’ll explore other strategies and how combining these ideas led us to **SJ-MAE**, our hybrid self-supervised framework.
+
+## Other Approaches and Hybrid Losses
+
+Beyond contrastive and reconstruction objectives, researchers have explored a variety of creative **pretext tasks**.
+
+> The pretext tasks are just the name we give the tasks we use to make the model learn representation: reconstruction, similarity-based etc.
+
+One early and intuitive idea is the **Jigsaw task**.  
+Here, an image is divided into several patches that are randomly shuffled, and the model must learn to predict the correct spatial order. This simple task teaches the network about **spatial relationships and object structure**, since solving the puzzle requires recognizing how parts fit together, which is an important aspect of visual reasoning.
+
+There are also other related pretext tasks that emerged as well:
+- **Rotation prediction (RotNet)**:  the model predicts the rotation angle applied to an image (0°, 90°, 180°, 270°), helping it learn about global orientation and shapes.  
+
+- **Colorization**: the model reconstructs color channels from grayscale input, encouraging it to capture semantic cues linked to color and texture. 
+ 
+- **Inpainting or jigsaw-inpainting hybrids**: combining patch prediction and spatial arrangement, forcing both local and contextual understanding.  
+
+So many different tasks have tried to make neural networks better at understanding images. These approaches have all shown the ability to learn generalizable features, though some have proven significantly more effective than others. 
+
+At the time I’m writing this, the top-performing self-supervised vision foundation models include **DINOv3**, **MoCo v3** and **I-JEPA**. Others are also focused on specific fields, such as **PhiNet v2** for videos and **BioVFM-21M** for biomedical images.
+
+## Combining Multiple Losses
+
+While each of these approaches captures a different aspect of visual understanding such as contrastive methods focusing on similarity, reconstruction on context, and tasks like jigsaw on spatial structure, they might miss the big picture, as they're unable to have all these different optimizations at once.
+
+A model that only learns to *compare* images might ignore fine details, while one that only *reconstructs* pixels might overfit to textures, and one that only learns *spatial ordering* might miss global semantics.
+
+So, what if we could combine these complementary perspectives into a single framework?  
+That way, the model could learn from multiple signals at once... for example with spatial reasoning from jigsaw, global semantics from contrastive loss, and local understanding from reconstruction... → This is exactly our idea behind **SJ-MAE**!
+
+This idea of **hybrid self-supervision** has been explored in various forms, but remains challenging to design effectively. Balancing the contribution of each objective, and ensuring they cooperate instead of competing, is still an open research question.
+
+That’s exactly the motivation behind **SJ-MAE**, which combines multiple objectives: reconstruction, jigsaw, and contrastive learning. It seeks to push representation learning further.
+
+In the next part, we’ll dive into **how these objectives interact**, and how SJ-MAE integrates them into a unified architecture!
+
+<a
+  href="https://julescollenne.github.io/blog/sjmae3"
+  target="_blank" rel="noreferrer"
+  className="inline-flex items-center px-3 py-0.5 text-xs rounded-full bg-white/10 text-white/80 backdrop-blur-sm hover:bg-white/20 hover:text-white transition"
+>
+  Read Part 3 →
+</a>
+

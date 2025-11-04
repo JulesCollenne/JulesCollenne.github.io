@@ -1,0 +1,150 @@
+---
+slug: sjmae1
+title: Why I made SJ-MAE - Part 1 - From Supervision to Foundation Models
+date: 2025-11-04
+summary: "A brief overview of recent advances in Self-Supervised Vision Foundation Models and why I tackled this problem."
+tags: [self-supervised, research, foundation models, computer vision]
+cover: /blog/sjmae/arch.pdf
+---
+
+# Why I made SJ-MAE - Part 1 - From Supervision to Foundation Models
+
+<figure>
+  <img src="/blog/sjmae/arch.png" alt="Cover" loading="lazy" />
+</figure>
+
+Architecture of our model, called SJ-MAE.
+
+# What are Self-Supervised Vision Foundation Models?
+
+Depending on where you're coming from, you might think I'm just throwing together random buzzwords, hoping nobody notices that I don’t know what I’m talking about. And you’d almost be right!  
+But I *do* know a little about this field, and about the work we did with SJ-MAE... so here’s a breakdown of what these words actually mean, and how they connect, in order to introduce you to our work.
+
+<div className="border-l-4 border-white/20 bg-white/5 rounded-md p-3 text-sm text-white/80 italic backdrop-blur-sm">
+  🧠 <b>TL;DR</b> - Machine learning models differ mainly by how they learn:
+  <ul className="list-disc list-inside mt-2 space-y-1">
+    <li><i>Supervised</i>: learns from human labels</li>
+    <li><i>Reinforcement</i>: learns from rewards</li>
+    <li><i>Self-supervised</i>: learns from data itself</li>
+  </ul>
+  Foundation Models use these ideas to build general representations that can transfer to any vision task.
+</div>
+
+## Supervision in Machine Learning
+
+There are different ways to train neural networks: **supervised**, **self-supervised**, **reinforcement**, and **unsupervised**.  
+Each of these methods depends on how we tell the model whether it’s right or wrong for each batch (a set of input instances).  
+In the case of images, the model processes multiple samples at once (a *batch*) and outputs predictions.
+
+### Supervised learning
+
+If we were doing classification, for each image in the batch we would tell the model:  
+“This image is a dog, you said cat... adjust your parameters!”  
+or  
+“This image is a cat, and you said it was a cat... good job, keep it that way!”
+
+In this setup, we provide the model with the *ground truth*, because we know the correct answer for each image.  
+The training loss (Cross-Entropy Loss) is relatively easy to understand:
+
+![Cross-Entropy Loss](/blog/sjmae/cross_entropy.png)
+
+Here:
+- `x` is the **input image** (for example, a picture of a cat 🐱).  
+- `y` is the **true label** — the index of the correct class ("cat").  
+- `z_j` represents the **logit** predicted by the model for class *j*.  
+- The **softmax** function converts logits into probabilities `p_j`, ensuring all classes sum to 1.  
+- The **loss** penalizes the model when the predicted probability `p_y` for the correct class is low.
+
+Intuitively, the model is rewarded for assigning **high probability** to the true class and **low probability** to all others.  
+As training progresses, minimizing this loss aligns the classifier’s confidence with the ground truth.
+
+### Unsupervised and Self-Supervised Learning
+
+When we don’t have labels or ground truth, we need to find other ways to train the model without giving it the direct answer.  
+We’ll see later which types of loss functions are used in these cases.
+
+**Reinforcement learning** stands somewhere between supervised and unsupervised learning: it uses *rewards* from an environment to guide the model toward better decisions.
+
+Here, we’ll focus on **unsupervised methods**.  
+Self-supervised learning (SSL) is actually a *specialized form* of unsupervised learning that uses information already contained within the data itself... the image!
+
+It might sound strange that the “label” comes from the image itself, but it’ll make perfect sense once we dive into how these models are trained.
+
+Before that, here’s a simple table of the main paradigms, organized from least to most supervised:
+
+<table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid #ddd', borderRadius: '8px' }}>
+  <thead>
+    <tr style={{ borderBottom: '1px solid' }}>
+      <th style={{ padding: '14px 10px', textAlign: 'left' }}>Paradigm</th>
+      <th style={{ padding: '14px 10px', textAlign: 'left' }}>Type of Signal</th>
+      <th style={{ padding: '14px 10px', textAlign: 'left' }}>Objective</th>
+      <th style={{ padding: '14px 10px', textAlign: 'left' }}>Examples</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid' }}>
+      <td style={{ padding: '14px 10px' }}>🌀 <b>Unsupervised</b></td>
+      <td style={{ padding: '14px 10px' }}>None</td>
+      <td style={{ padding: '14px 10px' }}>Discover structure or latent factors</td>
+      <td style={{ padding: '14px 10px' }}>PCA, k-means, Autoencoders (no labels)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #eee' }}>
+      <td style={{ padding: '14px 10px' }}>🧩 <b>Self-supervised</b></td>
+      <td style={{ padding: '14px 10px' }}>Pseudo-labels generated from data</td>
+      <td style={{ padding: '14px 10px' }}>Learn representations by solving pretext tasks</td>
+      <td style={{ padding: '14px 10px' }}>SimCLR, MoCo, MAE, BYOL, BERT</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #eee' }}>
+      <td style={{ padding: '14px 10px' }}>🎯 <b>Reinforcement</b></td>
+      <td style={{ padding: '14px 10px' }}>Reward signal from environment</td>
+      <td style={{ padding: '14px 10px' }}>Maximize long-term cumulative reward through interaction</td>
+      <td style={{ padding: '14px 10px' }}>Q-learning, DQN, PPO, A3C</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '14px 10px' }}>🏷️ <b>Supervised</b></td>
+      <td style={{ padding: '14px 10px' }}>Explicit human-provided labels</td>
+      <td style={{ padding: '14px 10px' }}>Minimize prediction error vs. true targets</td>
+      <td style={{ padding: '14px 10px' }}>ResNet, GPT (fine-tuning), Linear regression</td>
+    </tr>
+  </tbody>
+</table>
+
+> What we call a representation is a compact vector capturing the essence of an image, the way the model "understand" it.
+
+# Foundation Models
+
+Now, let’s talk about **Foundation Models** (FMs).
+
+## A Bit of Background
+
+Machine learning models used to be mostly supervised, focusing on one specific goal: detecting objects, generating images, classifying images, and so on.
+
+Over time, researchers realized that large models trained on massive datasets could dramatically speed up learning for other tasks.  
+**ImageNet**, for example, is a dataset containing over a million labeled images. When models are trained on ImageNet, they don’t just learn to classify its categories, they also develop a general understanding of shapes, textures, and structures that transfer well to almost any vision task.
+
+This led to the idea of **transfer learning**: instead of training a model from scratch for each new problem, we can fine-tune a pre-trained model on our dataset and achieve strong performance in only a few epochs, compared to hundreds otherwise.
+
+Thus, **Foundation Models** emerged as the idea of creating models that learn deep and generalizable visual representations, serving as the *foundation* for all other vision tasks.
+
+## How Can These Models Learn General Representations?
+
+Relying solely on classification can be limiting in terms of representation quality.  
+Some tasks require richer, more semantic features than those obtained from standard supervised learning.
+
+This limitation, combined with the enormous amount of **unlabeled images** available online, motivated the design of new architectures capable of leveraging this unlabeled data to train stronger Foundation Models.
+
+That’s how **Self-Supervised Vision Foundation Models** appeared in research: their goal is to use the vast amount of unlabelled data on the internet to build models that can encode any image into a powerful, reusable representation.
+
+In the next post, we'll see how these self-supervised FM learn representations from images only!
+
+Stay tuned!
+
+<a
+  href="https://julescollenne.github.io/blog/sjmae2"
+  target="_blank" rel="noreferrer"
+  className="inline-flex items-center px-3 py-0.5 text-xs rounded-full bg-white/10 text-white/80 backdrop-blur-sm hover:bg-white/20 hover:text-white transition"
+>
+  Read Part 2 →
+</a>
+
+---

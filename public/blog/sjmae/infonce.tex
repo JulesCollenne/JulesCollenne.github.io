@@ -1,0 +1,14 @@
+\documentclass[preview,border=2pt]{standalone}
+\usepackage{amsmath, amssymb}
+\begin{document}
+\[
+\mathcal{L}_{\text{InfoNCE}}(i)
+= - \log
+\frac{\exp\!\big(\mathrm{sim}(z_i, z_{i^+})/\tau\big)}
+{\sum_{k=1}^{K} \exp\!\big(\mathrm{sim}(z_i, z_k)/\tau\big)}
+\]
+\[
+\mathrm{sim}(a,b)=\frac{a^\top b}{\lVert a\rVert \,\lVert b\rVert}
+\quad\text{(cosine similarity)}
+\]
+\end{document}
