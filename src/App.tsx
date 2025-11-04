@@ -27,7 +27,7 @@ const SOCIALS = [
 const NEWS = [
   { date: "2025-09-18", text: "GuessTheMovie is live!", url: "https://www.guessthemovie.eu/" },
   { date: "2025-09-01", text: "Launched my consulting company in AI & Data Science 🚀" },
-  { date: "2025-07-23", text: "Submitted Sj-Mae: Unified Multi-Task Pretraining of Vision Transformers Via Masked, Jigsaw and Contrastive Objectives in Neurocomputing!", url: "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5349677" },
+  { date: "2025-07-23", text: "Submitted Sj-Mae: Unified Multi-Task Pretraining of Vision Transformers Via Masked, Jigsaw and Contrastive Objectives!", url: "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5349677" },
   { date: "2024-12-01", text: "Officially earned my PhD in AI applied to medicine!" },
   { date: "2024-06-01", text: "Our work was accepted for presentation at ICIP 2024." },
   { date: "2024-05-01", text: "Served as reviewer for MICCAI 2024 and BMVC 2024." },
