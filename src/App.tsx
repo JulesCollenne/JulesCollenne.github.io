@@ -92,7 +92,7 @@ const PROJECTS = [
     field: { en: "Machine Learning & AI", fr: "Apprentissage automatique & IA" },
     projects: [
         {
-          title: "Mandragore Board Game Rules Assistant - 2025",
+          title: "Board Game Rules Assistant - 2025",
           blurb: {
             en: "LLM-based assistant designed to explain and reason about complex board game rules, handling ambiguities, exceptions, and contextual questions.",
             fr: "Assistant basé sur des LLM conçu pour expliquer et raisonner sur des règles de jeux de société complexes, en gérant les ambiguïtés, exceptions et questions contextuelles.",
