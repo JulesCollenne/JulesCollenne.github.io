@@ -91,8 +91,24 @@ const PROJECTS = [
   {
     field: { en: "Machine Learning & AI", fr: "Apprentissage automatique & IA" },
     projects: [
+        {
+          title: "Mandragore Board Game Rules Assistant - 2025",
+          blurb: {
+            en: "LLM-based assistant designed to explain and reason about complex board game rules, handling ambiguities, exceptions, and contextual questions.",
+            fr: "Assistant basé sur des LLM conçu pour expliquer et raisonner sur des règles de jeux de société complexes, en gérant les ambiguïtés, exceptions et questions contextuelles.",
+          },
+          tags: ["LLMs", "RAG", "Knowledge Systems", "Product AI", "Applied NLP"],
+        },
+        {
+          title: "AI-Powered Vehicle Image Enhancement - 2025",
+          blurb: {
+            en: "Production-deployed AI pipeline for an automotive client, transforming high-volume raw car photos into clean, realistic, studio-quality visuals for online sales.",
+            fr: "Pipeline IA déployé en production pour un client automobile, transformant à grande échelle des photos brutes de véhicules en visuels propres, réalistes et prêts pour la vente en ligne.",
+          },
+          tags: ["Computer Vision", "FastAPI", "Applied AI", "AI Integration", "Product"]
+        },
       {
-        title: "SJ-MAE",
+        title: "SJ-MAE - 2025",
         blurb: {
           en: "Multi-task ViT pretraining combining masked reconstruction, jigsaw, and contrastive objectives.",
           fr: "Pré-entraînement ViT multi-tâches combinant reconstruction masquée, puzzle « jigsaw » et objectifs contrastifs.",
@@ -101,7 +117,7 @@ const PROJECTS = [
         link: "https://github.com/JulesCollenne/SJ-MAE",
       },
       {
-        title: "Melanoma Detection (PhD)",
+        title: "Melanoma Detection (PhD) - 2021-2024",
         blurb: {
           en: "End-to-end computer-aided diagnosis for dermoscopy: asymmetry cues, lesion comparison, and self-supervised pretraining to improve melanoma detection and interpretability.",
           fr: "Aide au diagnostic de bout en bout en dermoscopie : asymétries, comparaison de lésions et pré-entraînement auto-supervisé pour améliorer la détection du mélanome et l’interprétabilité.",
@@ -111,6 +127,14 @@ const PROJECTS = [
         relatedPubIds: ["reset-icip-2024", "jaad-2024", "jid-2024", "mlmi-2023", "ijms-2022"],
         logo: "/logos/lesion.png",
       },
+    {
+      title: "Generative Audio One-Shot Synthesis - 2021",
+      blurb: {
+        en: "Custom generative audio model designed for large-scale one-shot sound synthesis (kicks, snares, instruments), built to be trained and run on the client’s infrastructure.",
+        fr: "Modèle génératif audio sur mesure pour la synthèse de sons one-shot à grande échelle (percussions, instruments), conçu pour être entraîné et exécuté sur l’infrastructure du client.",
+      },
+      tags: ["Generative Models", "Audio ML", "Large-Scale Data", "Applied Research"],
+    },
     ],
   },
   {
