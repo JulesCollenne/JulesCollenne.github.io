@@ -650,7 +650,7 @@ export default function OnePageSite() {
             return (
               <article
                 key={pr.title}
-                className="rounded-2xl border border-neutral-200 p-4 shadow-sm transition hover:shadow-md dark:border-neutral-800"
+                className="rounded-2xl border border-neutral-200 bg-white/20 backdrop-blur-sm p-4 shadow-sm transition hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900/30 dark:backdrop-blur-sm"
               >
                 <div className="flex items-start justify-between gap-4">
                   {/* Left: text */}
