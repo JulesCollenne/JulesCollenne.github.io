@@ -7,6 +7,14 @@ html, body, #root { height: 100%; }
 body { margin: 0; }
 #root { margin: 0; padding: 0; max-width: none; }
 
+@layer components {
+  .btn {
+    @apply inline-flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-1.5 text-sm shadow-sm
+           text-neutral-900 dark:text-neutral-100 hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-900;
+  }
+}
+
+
 /* Style headings & spacing inside post content via a wrapper class */
 @layer base {
   .article-content h1 { @apply mt-10 mb-4 text-3xl font-semibold; }

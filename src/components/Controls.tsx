@@ -49,6 +49,7 @@ export default function Controls() {
       </button>
 
       {/* Theme toggle */}
+      {/*
       <button
         type="button"
         aria-label="Toggle color theme"
@@ -58,6 +59,7 @@ export default function Controls() {
       >
         <span className="font-medium">{theme === "dark" ? "🌙" : "☀️"}</span>
       </button>
+      */}
     </div>
   );
 }

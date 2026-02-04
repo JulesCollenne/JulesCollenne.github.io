@@ -35,3 +35,53 @@ lesion_0.jpg
 lesion_1.jpg
 ...
 
+          <Divider />
+
+          {/* References slider */}
+<div className="mt-6 w-full">
+  <ul className="flex flex-wrap gap-3">
+    {[
+      //{ name: lang === "fr" ? "🔧️ Démos" : "🔧️ Demos", href: "/demo" },
+
+      { name: t(lang, "refs_title_guessthemovie"), href: "https://www.guessthemovie.eu" },
+      { name: t(lang, "refs_title_ebooks"), href: "https://julesphere354.gumroad.com/" },
+      { name: t(lang, "refs_title_fiverr"), href: "https://www.fiverr.com/s/o8ZNge8" },
+      /*{
+        name: t(lang, "refs_title_lessons"),
+        href: "https://www.superprof.fr/diplome-doctorat-intelligence-artificielle-universite-aix-marseille-enseigne-programmation-python-java.html",
+      },*/
+    ].map((ref) => (
+      <li
+        key={ref.href}
+        className="min-w-0 basis-[calc(50%-0.375rem)] sm:flex-[0_1_auto]"
+      >
+        {ref.href.startsWith("/") ? (
+          <Link
+            to={ref.href}
+            className="block w-full text-center rounded-lg px-4 py-2 text-sm font-medium
+                       bg-neutral-100 text-neutral-700 hover:bg-neutral-200
+                       dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700
+                       transition-colors truncate"
+            title={ref.name}
+          >
+            {ref.name}
+          </Link>
+        ) : (
+          <a
+            href={ref.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full text-center rounded-lg px-4 py-2 text-sm font-medium
+                       bg-neutral-100 text-neutral-700 hover:bg-neutral-200
+                       dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700
+                       transition-colors truncate"
+            title={ref.name}
+          >
+            {ref.name}
+          </a>
+        )}
+      </li>
+    ))}
+  </ul>
+</div>
+

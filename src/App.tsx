@@ -25,6 +25,7 @@ const SOCIALS = [
 ];
 
 const NEWS = [
+  { date: "2026-02-01", text: "Automated vehicle image processing for an automotive software company: cropping, glass transparency, shadow and ground reflection generation."},
   { date: "2025-09-18", text: "GuessTheMovie is live!", url: "https://www.guessthemovie.eu/" },
   { date: "2025-09-01", text: "Launched my consulting company in AI & Data Science 🚀" },
   { date: "2025-07-23", text: "Submitted Sj-Mae: Unified Multi-Task Pretraining of Vision Transformers Via Masked, Jigsaw and Contrastive Objectives!", url: "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5349677" },
@@ -302,6 +303,34 @@ function initials(s: string) {
     .join("");
 }
 
+function SocialLinks({ lang }: { lang: Lang }) {
+  return (
+    <div className="mt-6">
+      {/* Hide label on mobile, show only on lg screens */}
+      <div className="mb-2 text-xs uppercase tracking-wider text-neutral-500 hidden lg:block">
+        {t(lang, "on_the_web")}
+      </div>
+
+      {/* Horizontal on mobile, vertical on desktop */}
+      <ul className="flex flex-wrap justify-center gap-3 text-sm lg:flex-col lg:gap-2 lg:justify-start">
+        {SOCIALS.map((s) => (
+          <li key={s.label}>
+            <a
+              href={s.href}
+              className="rounded-md underline-offset-4 hover:underline"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              {s.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+
 export default function OnePageSite() {
     const ctx = useLangThemeCtx();
     const lang: Lang = ctx?.lang ?? detectLang();
@@ -347,7 +376,7 @@ export default function OnePageSite() {
   return (
     <div className="min-h-screen antialiased overflow-x-hidden
                 bg-white text-neutral-900
-                dark:bg-neutral-950">
+                dark:bg-neutral-900">
     <BackgroundNet
       density={0.00005}   // tweak: 0.00003–0.00008
       connectDist={140}   // tweak: 110–160
@@ -410,25 +439,7 @@ export default function OnePageSite() {
             />
 
             {/* Socials */}
-            <div>
-              <div className="mb-2 text-xs uppercase tracking-wider text-neutral-500">
-                {t(lang, "on_the_web")}
-              </div>
-              <ul className="space-y-2 text-sm">
-                {SOCIALS.map((s) => (
-                  <li key={s.label}>
-                    <a
-                      href={s.href}
-                      className="rounded-md underline-offset-4 hover:underline"
-                      target="_blank"
-                      rel="noreferrer noopener"
-                    >
-                      {s.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <SocialLinks lang={lang} />
           </div>
         </aside>
 
@@ -461,8 +472,7 @@ export default function OnePageSite() {
               <br />
               {t(lang, "about_p3")}
             </p>
-           
-           
+
 {/* Technical keywords */}
 <div className="mt-6 flex flex-wrap gap-2 text-xs text-neutral-600 dark:text-neutral-400">
   {(lang === "fr"
@@ -473,11 +483,9 @@ export default function OnePageSite() {
         "Deep learning médical",
         "Analyse d’images dermatologiques",
         "FastAPI",
-        "Next.js",
         "SQL",
         "GitHub",
         "Docker",
-        "Pipeline de données",
         "Déploiement IA",
       ]
     : [
@@ -487,11 +495,9 @@ export default function OnePageSite() {
         "Medical AI",
         "Dermatology imaging",
         "FastAPI",
-        "Next.js",
         "SQL",
         "GitHub",
         "Docker",
-        "Data pipelines",
         "AI deployment",
       ]
   ).map((kw) => (
@@ -503,64 +509,13 @@ export default function OnePageSite() {
     </span>
   ))}
 </div>
-           
-        
-            <br />
-           
-            
-            <ConsultingCTA lang={lang} />
-            
-          </section>
-
-          <Divider />
-
-          {/* References slider */}
-<div className="mt-6 w-full">
-  <ul className="flex flex-wrap gap-3">
-    {[
-      //{ name: lang === "fr" ? "🔧️ Démos" : "🔧️ Demos", href: "/demo" },
-
-      { name: t(lang, "refs_title_guessthemovie"), href: "https://www.guessthemovie.eu" },
-      { name: t(lang, "refs_title_ebooks"), href: "https://julesphere354.gumroad.com/" },
-      { name: t(lang, "refs_title_fiverr"), href: "https://www.fiverr.com/s/o8ZNge8" },
-      /*{
-        name: t(lang, "refs_title_lessons"),
-        href: "https://www.superprof.fr/diplome-doctorat-intelligence-artificielle-universite-aix-marseille-enseigne-programmation-python-java.html",
-      },*/
-    ].map((ref) => (
-      <li
-        key={ref.href}
-        className="min-w-0 basis-[calc(50%-0.375rem)] sm:flex-[0_1_auto]"
-      >
-        {ref.href.startsWith("/") ? (
-          <Link
-            to={ref.href}
-            className="block w-full text-center rounded-lg px-4 py-2 text-sm font-medium
-                       bg-neutral-100 text-neutral-700 hover:bg-neutral-200
-                       dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700
-                       transition-colors truncate"
-            title={ref.name}
-          >
-            {ref.name}
-          </Link>
-        ) : (
-          <a
-            href={ref.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block w-full text-center rounded-lg px-4 py-2 text-sm font-medium
-                       bg-neutral-100 text-neutral-700 hover:bg-neutral-200
-                       dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700
-                       transition-colors truncate"
-            title={ref.name}
-          >
-            {ref.name}
-          </a>
-        )}
-      </li>
-    ))}
-  </ul>
+{/* Mobile socials */}
+<div className="mb-6 lg:hidden">
+  <SocialLinks lang={lang} />
 </div>
+          <ConsultingCTA lang={lang} />
+
+          </section>
 
           <Divider />
 
@@ -651,7 +606,6 @@ export default function OnePageSite() {
   ))}
 </ul>
 
-
   {/* “See more” / “See less” like News & Teaching */}
   <div className="mt-3 flex gap-4 text-sm">
     {pubCount < PUBLICATIONS.length && (
@@ -673,11 +627,7 @@ export default function OnePageSite() {
   </div>
 </section>
 
-
-
 <Divider />
-
-
 
 {/* Projects */}
 <section id="projects" className="scroll-mt-24">
@@ -761,70 +711,80 @@ export default function OnePageSite() {
                   </a>
                 </div>
 
-                {/* Toggle related papers */}
-                {hasRelated ? (
-                  <div className="mt-3">
-                    <button
-                      onClick={() =>
-                        setOpenRelated((s) => ({ ...s, [pr.title]: !s[pr.title] }))
-                      }
-                      aria-expanded={isOpen}
-                      aria-controls={panelId}
-                      className="inline-flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-1.5 text-sm shadow-sm hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-900"
-                    >
-                      <span>
-                        {isOpen ? t(lang, "related_hide") : t(lang, "related_show")}
-                      </span>
-                      <svg
-                        className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </button>
+                {hasRelated && (
+  <div className="flex flex-col gap-2">
+    <button
+      onClick={() => setOpenRelated((s) => ({ ...s, [pr.title]: !s[pr.title] }))}
+      aria-expanded={isOpen}
+      aria-controls={panelId}
+      className="flex items-center justify-between gap-2 rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-900 shadow-sm transition-all hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:hover:bg-neutral-800"
+    >
+      <span>
+        {isOpen ? t(lang, "related_hide") : t(lang, "related_show")}
+      </span>
+      <svg
+        className={`h-5 w-5 shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`}
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          fillRule="evenodd"
+          d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+          clipRule="evenodd"
+        />
+      </svg>
+    </button>
 
-                    <div
-                      id={panelId}
-                      className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-out ${
-                        isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-                      }`}
-                    >
-                      <div className="mt-3 rounded-xl border border-neutral-200 p-3 text-sm dark:border-neutral-800">
-                        <div className="mb-2 font-medium">Related papers</div>
-                        <ul className="space-y-1">
-                          {pubsByIds((pr as any).relatedPubIds).map((p) => {
-                            const pl = primaryLink(p);
-                            return (
-                              <li key={p.id} className="break-words">
-                                {pl ? (
-                                  <a
-                                    href={pl.href}
-                                    className="underline underline-offset-4 hover:no-underline"
-                                    target="_blank"
-                                    rel="noreferrer noopener"
-                                  >
-                                    {p.title} · {p.venue} {p.year}
-                                  </a>
-                                ) : (
-                                  <span>
-                                    {p.title} · {p.venue} {p.year}
-                                  </span>
-                                )}
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    </div>
+    <div
+      id={panelId}
+      className={`overflow-hidden rounded-b-lg border border-t-0 border-neutral-200 bg-white transition-all duration-300 dark:border-neutral-800 dark:bg-neutral-950 ${
+        isOpen ? "max-h-96 opacity-100 border-opacity-100" : "max-h-0 opacity-0 border-opacity-0"
+      }`}
+    >
+      <div className="p-4">
+        <div className="mb-3 font-medium dark:text-neutral-100">
+          Related papers
+        </div>
+        <ul className="space-y-2">
+          {pubsByIds((pr as any).relatedPubIds).map((p) => {
+            const pl = primaryLink(p);
+            return (
+              <li key={p.id} className="break-words text-neutral-700 dark:text-neutral-300">
+                {pl ? (
+                  <a
+                    href={pl.href}
+                    className="inline-flex items-baseline gap-1 underline-offset-4 hover:no-underline hover:text-blue-600 dark:hover:text-blue-400"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    <span className="text-sm">{p.title}</span>
+                    <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                      · {p.venue} {p.year}
+                    </span>
+                  </a>
+                ) : (
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-sm">{p.title}</span>
+                    <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                      · {p.venue} {p.year}
+                    </span>
                   </div>
-                ) : null}
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </div>
+  </div>
+)}
+
+
+
               </article>
+
+
             );
           })}
         </div>
