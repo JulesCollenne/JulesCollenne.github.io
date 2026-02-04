@@ -1,7 +1,7 @@
 ---
 slug: sjmae3
 title: Why I made SJ-MAE - Part 3 - Combining Tasks for Better Representations
-date: 2025-11-06
+date: 2026-01-12
 summary: "A brief overview of recent advances in Self-Supervised Vision Foundation Models and why I tackled this problem."
 tags: [self-supervised, research, foundation models, computer vision]
 cover: /blog/sjmae/arch.pdf
@@ -9,12 +9,92 @@ cover: /blog/sjmae/arch.pdf
 
 # Why I made SJ-MAE - Part 3 - Combining Tasks for Better Representations
 
+<a
+  href="https://julescollenne.github.io/blog/sjmae2"
+  target="_blank" rel="noreferrer"
+  className="inline-flex items-center px-3 py-0.5 text-xs rounded-full bg-white/10 text-white/80 backdrop-blur-sm hover:bg-white/20 hover:text-white transition"
+>
+  Read Part 2 →
+</a>
+
 <figure>
   <img src="/blog/sjmae/arch.png" alt="Cover" loading="lazy" />
 </figure>
 
 Architecture of our model, called SJ-MAE.
 
-🚧️ Coming soon! I’m putting the finishing touches on this one. 🚧️
+<div className="border-l-4 border-white/20 bg-white/5 rounded-md p-3 text-sm text-white/80 italic backdrop-blur-sm">
+  🧠 <b>TL;DR</b> - SJ-MAE goes beyond individual self-supervised tasks by combining them into a single hybrid framework:
+  <ul className="list-disc list-inside mt-2 space-y-1">
+    <li><i>Complementary Objectives</i>: reconstruction captures local details, jigsaw captures spatial structure, and contrastive learning captures semantic similarity</li>
+    <li><i>Joint Optimization</i>: balancing these objectives is crucial to ensure the model learns all aspects without one dominating</li>
+    <li><i>Rich Representations</i>: by integrating multiple signals, SJ-MAE produces embeddings that generalize better across datasets and downstream tasks</li>
+  </ul>
+  This final approach demonstrates how thoughtfully combining multiple self-supervised strategies can push representation learning further than any single method alone.
+</div>
 
+# The Challenge of Hybrid Self-Supervision
 
+By now, you’ve seen that self-supervised learning comes in many flavors: **contrastive learning** helps the model understand similarity, **masked reconstruction** teaches it to infer missing content, and **pretext tasks** like jigsaw focus on spatial reasoning.
+
+But trying to make a model learn all these at once isn’t trivial. Each objective can pull the network in a different direction. Too much focus on one task might overshadow the others. Too little, and the model might fail to learn anything useful.
+
+In essence, combining these objectives is like juggling three balls at the same time: it requires careful balance and coordination.
+
+# How SJ-MAE Combines Multiple Objectives
+
+Our goal with **SJ-MAE** was simple in concept but tricky in practice: let the model learn from **multiple signals simultaneously**, so it could capture richer, more general representations.
+
+Here’s how we approached it:
+
+### Masked Reconstruction (MAE branch)
+The model sees an image with randomly masked patches. The encoder learns a compact representation, and the decoder tries to reconstruct the missing patches.
+This teaches the network to **infer local details and context**, building a strong feature bottleneck.
+
+### Jigsaw Puzzle (Jigsaw branch)
+Randomly shuffling image patches, the model predicts their original positions.
+This encourages understanding of **spatial relationships** and object structure — something reconstruction alone might not fully capture.
+
+### Contrastive Learning (Siamese branch)
+We generate augmented pairs of the same image and train the model to pull them together in embedding space while pushing other images apart.
+This branch focuses on **semantic consistency**, making representations invariant to transformations like rotation, cropping, or color jitter.
+
+> Each branch addresses a different type of visual understanding: **local detail**, **spatial structure**, and **semantic similarity**.
+
+# Balancing the Objectives
+
+We combined these losses into a single training objective:
+
+![Final loss](/blog/sjmae/final_loss_sjmae.jpg)
+
+- `w_J` and `w_S` are weights controlling the contribution of the jigsaw and contrastive branches.
+- Adjusting these weights allows us to **balance local vs. global features** and **spatial vs. semantic reasoning**.
+- Through experiments, we found that moderate values (e.g., `w_J = 10`) generally worked well across datasets.
+
+# Intuition Behind SJ-MAE
+
+Think of SJ-MAE as a student learning a new skill:
+
+- One teacher gives it **pieces of a puzzle** to understand spatial relationships.
+- Another teacher **hides parts of the picture** and asks the student to reconstruct them, teaching inference.
+- A third teacher compares the student’s work to peers, encouraging **consistency and semantic understanding**.
+
+By combining all three, the student learns not just the small details, but also the bigger picture — a representation that generalizes across tasks.
+
+# Practical Results
+
+On benchmarks like **CIFAR-100**, **Caltech-256**, and **Imagenette**, SJ-MAE consistently outperformed single-objective models:
+
+- Representations captured both **fine-grained texture** and **high-level semantic concepts**.
+- Linear probing showed higher classification accuracy than vanilla MAE or Jigsaw models alone.
+- Ablations confirmed that each branch contributed meaningfully: removing any branch degraded performance.
+
+# Closing Thoughts
+
+SJ-MAE represents the culmination of this exploration into hybrid self-supervised learning. By integrating reconstruction, jigsaw, and contrastive learning, we’ve created a model that learns **richer, more generalizable visual representations** than any single approach alone.
+
+Hybrid self-supervision is still an open field: balancing multiple objectives, extending them to other modalities, or adding new tasks remains an exciting challenge. But SJ-MAE demonstrates that combining complementary signals can lead to **substantially stronger representations**, and it’s a step forward for self-supervised vision foundation models.
+
+> Thanks for following the series! I hope this journey into SJ-MAE has given you a clearer picture of the possibilities in self-supervised learning and the kind of design decisions that go into building these models.
+
+---
